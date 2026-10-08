@@ -1,0 +1,17 @@
+PASS admin login
+PASS new fixture
+PASS employee fixture login
+PASS request
+PASS reject
+PASS employee withdraws rejected request
+PASS visible audit reason
+PASS cannot approve withdrawn request
+PASS fixture upload
+PASS employee cannot delete accounts
+PASS self deletion prevented
+PASS confirmation required
+PASS admin password required
+PASS employee erased
+PASS document no longer available
+PASS existing employee session invalidated
+PASS related audit removed and neutral deletion receipt retained

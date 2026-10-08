@@ -1,0 +1,7 @@
+PASS storage created automatically
+PASS storage outside entire web root
+PASS private directory permissions
+PASS separate installations receive separate folders
+PASS canonical root handles symlink
+PASS non-writable parent fails without public fallback
+PASS unknown web root rejected

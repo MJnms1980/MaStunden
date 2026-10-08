@@ -1,0 +1,10 @@
+Tests nur in einer isolierten, wegwerfbaren Umgebung ausführen.
+Die Testdaten enthalten ausschließlich erfundene Personen und Testpasswörter.
+
+Die Integrationstests benötigen Python 3, eine lokale PHP-8.3-Umgebung und eine leere MySQL-8.4-Datenbank.
+Die mitgelieferten Testskripte dokumentieren den tatsächlich verwendeten lokalen Testaufbau (work/app bzw. work/fresh-app).
+Pfad- und Containerbezeichnungen für einen anderen Aufbau anpassen. Nicht auf produktive Installationen richten.
+Der Dockerfile dient nur der lokalen Entwicklung und ist keine Voraussetzung auf dem FTP-Webserver.
+
+MASTUNDEN_LOCAL_TEST=1 erlaubt HTTP ausschließlich im isolierten lokalen Testcontainer.
+Diesen Schalter niemals in einer produktiven Hostingumgebung setzen.

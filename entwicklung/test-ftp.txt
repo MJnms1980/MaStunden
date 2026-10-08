@@ -1,0 +1,13 @@
+PASS company and name initially empty
+PASS rejection: Unternehmensname fehlt dict_keys(['company'])
+PASS rejection: Ihr Name fehlt dict_keys(['name'])
+PASS rejection: absoluten FTP-Ordner dict_keys(['ftp_path'])
+PASS rejection: FTP-Einrichtung fehlgeschlagen dict_keys(['ftp_password'])
+PASS rejection: FTP-Einrichtung fehlgeschlagen dict_keys(['ftp_host'])
+PASS rejection: FTP-Einrichtung fehlgeschlagen dict_keys(['ftp_path'])
+PASS FTPS installation with read-only program folder
+PASS installed setup locked
+PASS final implementation: FTP and FTPS storage/configuration, private permissions and cleanup
+PASS direct automatic storage
+PASS configuration contains no FTP credentials
+PASS PHP syntax

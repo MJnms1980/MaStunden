@@ -1,0 +1,107 @@
+PASS browser installation
+PASS installer locked
+PASS page dashboard
+PASS page times
+PASS page absences
+PASS page reports
+PASS page documents
+PASS page team
+PASS page approvals
+PASS page settings
+PASS page backup
+PASS page audit
+PASS page account
+PASS create employee 2
+PASS create employee 3
+PASS explicit schedule
+PASS explicit schedule
+PASS employee login
+PASS required password change
+PASS work block and pause
+PASS overlap rejected
+PASS forged owner bound to current employee
+PASS cross-user report denied
+PASS employee admin page denied
+PASS CSRF rejected
+PASS absence over work rejected
+PASS vacation request
+PASS vacation approval
+PASS protected document upload
+PASS own document download
+PASS cross-user document denied
+PASS night shift
+PASS submit month
+PASS submitted month locked
+PASS month approval
+PASS PDF export
+PASS CSV totals
+PASS team summary
+PASS start backup
+PASS maintenance blocks employees
+PASS backup chunk 0
+PASS backup chunk 1
+PASS backup chunk 2
+PASS backup chunk 3
+PASS backup chunk 4
+PASS backup chunk 5
+PASS backup chunk 6
+PASS backup chunk 7
+PASS backup chunk 8
+PASS backup chunk 9
+PASS backup chunk 10
+PASS backup chunk 11
+PASS backup chunk 12
+PASS backup chunk 13
+PASS backup chunk 14
+PASS encrypted backup download
+PASS restore upload and safety backup
+PASS restore phase 0
+PASS restore phase 1
+PASS restore phase 2
+PASS restore phase 3
+PASS restore phase 4
+PASS restore phase 5
+PASS restore phase 6
+PASS restore phase 7
+PASS restore phase 8
+PASS restore phase 9
+PASS restore phase 10
+PASS restore phase 11
+PASS restore phase 12
+PASS restore phase 13
+PASS restore phase 14
+PASS restore phase 15
+PASS restore phase 16
+PASS restore phase 17
+PASS restore phase 18
+PASS restore phase 19
+PASS restore phase 20
+PASS restore phase 21
+PASS restore phase 22
+PASS restore phase 23
+PASS restore phase 24
+PASS restore phase 25
+PASS restore phase 26
+PASS restore phase 27
+PASS restore phase 28
+PASS restore phase 29
+PASS restore phase 30
+PASS restore phase 31
+PASS restore phase 32
+PASS restore phase 33
+PASS restore phase 34
+PASS restore phase 35
+PASS restore phase 36
+PASS restore phase 37
+PASS restore phase 38
+PASS restore phase 39
+PASS restore phase 40
+PASS restore phase 41
+PASS restore phase 42
+PASS restore phase 43
+PASS atomic restore commit
+PASS login after restore
+PASS restored document
+PASS restored report totals
+PASS previous employee session revoked by restore
+ALL INTEGRATION TESTS PASSED

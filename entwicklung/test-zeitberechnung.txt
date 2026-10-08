@@ -1,0 +1,19 @@
+PASS spring conversion
+PASS nonexistent spring hour rejected
+PASS ambiguous autumn hour rejected
+PASS first autumn hour
+PASS second autumn hour
+PASS invalid calendar date rejected
+PASS actual elapsed time across spring DST
+PASS September overnight allocation
+PASS October overnight allocation
+PASS monthly work total 16:30
+PASS vacation credit one day
+PASS vacation accounting
+PASS hourly absence credit
+PASS hourly vacation converted to scheduled day
+PASS old work model retained
+PASS new effective work model
+PASS holiday plus hourly credit
+PASS approved snapshot stable
+ALL DOMAIN TESTS PASSED

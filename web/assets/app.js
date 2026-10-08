@@ -1,0 +1,9 @@
+'use strict';
+document.querySelector('.mobile-toggle')?.addEventListener('click', e => { const open=document.body.classList.toggle('menu-open');e.currentTarget.setAttribute('aria-expanded',String(open)); });
+document.querySelector('#add-break')?.addEventListener('click',()=>{const root=document.querySelector('#breaks');const row=root.querySelector('.break-row').cloneNode(true);row.querySelectorAll('input').forEach(i=>i.value='');row.querySelectorAll('select').forEach(s=>s.value='');root.append(row);});
+document.querySelector('#breaks')?.addEventListener('click',e=>{if(e.target.matches('.remove-break')){const row=e.target.closest('.break-row');if(document.querySelectorAll('.break-row').length>1)row.remove();else{row.querySelectorAll('input').forEach(i=>i.value='');row.querySelectorAll('select').forEach(s=>s.value='');}}});
+document.querySelector('#print-button')?.addEventListener('click',()=>window.print());
+if(!document.querySelector('.alert.error')){const form=document.querySelector('#job-step form');if(form)setTimeout(()=>form.requestSubmit(),450);}
+document.querySelectorAll('form[method="post"]').forEach(f=>f.addEventListener('submit',()=>{f.querySelectorAll('button[type="submit"],button:not([type])').forEach(b=>{setTimeout(()=>b.disabled=true,0);});}));
+const menuButton=document.querySelector('.mobile-toggle');
+if(menuButton){const backdrop=document.createElement('button');backdrop.className='menu-backdrop';backdrop.type='button';backdrop.setAttribute('aria-label','Menü schließen');backdrop.tabIndex=-1;document.body.append(backdrop);const close=()=>{document.body.classList.remove('menu-open');menuButton.setAttribute('aria-expanded','false');};backdrop.addEventListener('click',close);document.addEventListener('keydown',e=>{if(e.key==='Escape'){close();menuButton.focus();}});matchMedia('(min-width:851px)').addEventListener('change',e=>{if(e.matches)close();});}

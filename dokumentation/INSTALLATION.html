@@ -1,0 +1,185 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MaStunden – Installationsanleitung</title><style>*{box-sizing:border-box}body{margin:0;font:16px/1.75 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#1b3340;background:#f3f7f8}header{background:#123b43;color:white;padding:40px max(24px,calc((100vw - 920px)/2))}header small{letter-spacing:2px;color:#9fd9ce}header strong{display:block;font-size:42px;letter-spacing:-1px}main{max-width:1000px;margin:35px auto;padding:44px 50px;background:white;border:1px solid #dce7eb;border-radius:18px}h1{font-size:28px;line-height:1.3;margin:0 0 24px}h2{font-size:23px;line-height:1.4;margin-top:48px;border-bottom:1px solid #dce7eb;padding-bottom:12px}h3{font-size:18px;margin-top:30px;color:#117a82}p{margin:15px 0}li{margin:7px 0}code{font-size:.86em;background:#eef4f5;padding:3px 5px;border-radius:4px;overflow-wrap:anywhere}pre{background:#eef4f5;padding:20px;border-radius:10px;overflow:auto;font-size:13px;line-height:1.6}a{color:#117a82}footer{max-width:950px;margin:25px auto;padding:0 24px 30px;font-size:13px;color:#687986}@media(max-width:650px){main{margin:15px 10px;padding:25px 20px}header{padding:25px}h1{font-size:24px}h2{font-size:21px}pre{font-size:11px}}@media print{body{background:white}header{color:#123b43;background:white;padding:0}main{margin:0;padding:20px 0;border:0}h2,h3{break-after:avoid}pre{white-space:pre-wrap}footer{padding:0}}</style></head><body><header><small>ENTWICKELT VON IT-JANZ</small><strong>MaStunden</strong>Installation · Einrichtung · Betrieb</header><main><h1 id="section-0">MaStunden 1.0.7 – Installation und Betrieb</h1>
+<p><strong>Für Ihr Unternehmen konfigurierbar · Entwickelt von IT-Janz</strong>   Stand: 8. Oktober 2026. Unternehmensangaben und Firmenlogo sind pro Installation anpassbar; das Entwicklerlogo ist fest eingebunden.</p>
+<h2 id="section-2">1. Was Sie erhalten</h2>
+<p>MaStunden ist eine PHP-/MySQL-Anwendung mit Mitarbeiter- und Administratorkonten, Arbeitszeiten und mehreren Pausen, Stempeluhr, Arbeitszeitmodellen, Stundenkonto, Abwesenheiten, Urlaubsfreigaben, geschützten Dokumenten, Monatsfreigaben, PDF-/CSV-Berichten, Änderungsprotokoll sowie verschlüsselten Backups und Wiederherstellung.</p>
+<p>Die Installation erfolgt ausschließlich über FTP/FTPS und den Browser. Auf dem Webserver werden weder SSH, Composer, Node.js noch Docker benötigt. Es gibt keine Cloud-, CDN-, Analyse- oder externen Schriftarten-Abhängigkeiten und keine Lohnabrechnung.</p>
+<p>Das Paket enthält:</p>
+<ul>
+<li><code>web/</code>: fertige Programmdateien, die auf den Webspace gehören.</li>
+<li><code>dokumentation/</code>: Anleitung, Funktionsübersicht und Prüfbericht.</li>
+<li><code>entwicklung/</code>: Datenbankschema und automatisierte Tests für Weiterentwicklung. <strong>Nicht öffentlich hochladen.</strong></li>
+</ul>
+<p><strong>Keine Testkonten und keine Datenbankzugangsdaten sind im ausgelieferten Programm vorkonfiguriert.</strong> Das erste Administratorkonto legen Sie selbst an.</p>
+<h2 id="section-12">Domains und getrennte Kundeninstallationen</h2>
+<p>MaStunden ist nicht an eine bestimmte Domain oder ein bestimmtes Unternehmen gebunden. Die Anwendung nutzt relative Links und ermittelt den Installationspfad aus der jeweiligen Serverumgebung. Im Programm muss keine Kunden-Domain eingetragen werden.</p>
+<p>Beispiele (durch Ihre eigenen Angaben ersetzen):</p>
+<ul>
+<li>Eigene Domain: <code>https://example.org/</code></li>
+<li>Subdomain: <code>https://stunden.example.org/</code></li>
+<li>Unterverzeichnis: <code>https://example.org/zeiterfassung/</code></li>
+<li>Installationsaufruf im Unterverzeichnis: <code>https://example.org/zeiterfassung/install.php</code></li>
+<li>Unternehmen: „Beispiel GmbH“; Administrator: „Alex Beispiel“; E-Mail: <code>admin@example.org</code>.</li>
+<li>FTP-Zielordner je nach Anbieter beispielsweise <code>/httpdocs/</code> oder <code>/httpdocs/zeiterfassung/</code>.</li>
+</ul>
+<p>Die Domains <code>example.org</code> und die genannten Personen- und Unternehmensnamen sind ausschließlich Beispiele. Firma, Administratorname und E-Mail werden bei der Installation selbst eingegeben und sind nicht vorausgefüllt.</p>
+<p>Für jedes Kundenunternehmen richten Sie eine separate Installation mit eigenen Programmdateien, eigener Konfiguration, eigenem geschütztem Speicher und eigener Datenbank ein. Alternativ können getrennte Tabellenpräfixe verwendet werden, sofern die Hostingrechte dies zulassen. Ein gemeinsamer Kundenwechsel innerhalb einer Installation ist nicht vorgesehen. Jede genutzte Domain benötigt ein gültiges HTTPS-Zertifikat. Der FTP-Servername und der Datenbankserver können von der Website-Domain abweichen; maßgeblich sind die Angaben Ihres Hosters.</p>
+<h2 id="section-25">2. Voraussetzungen beim Hoster</h2>
+<p>Erforderlich:</p>
+<ul>
+<li>PHP <strong>8.3 oder neuer</strong>, eine aktuell gepflegte PHP-Version verwenden. Geprüft mit PHP 8.3.</li>
+<li>MySQL <strong>8.0 oder neuer</strong> mit InnoDB und utf8mb4. Geprüft mit MySQL 8.4. MariaDB wurde nicht getestet.</li>
+<li>PHP-Erweiterungen: PDO MySQL, ZIP mit AES-256-Unterstützung, Fileinfo, Mbstring, GD, OpenSSL und die üblichen Standardfunktionen einschließlich iconv.</li>
+<li>HTTPS mit gültigem Zertifikat. PHP muss die Verbindung als HTTPS erkennen.</li>
+<li>Mindestens <strong>128 MB PHP memory_limit</strong>, für größere Backups und große Logos <strong>256 MB empfohlen</strong>.</li>
+<li>Ein bereits vorhandener Datenbankzugang mit SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, DROP und INDEX. Für die Wiederherstellung muss RENAME TABLE innerhalb dieser Datenbank erlaubt sein.</li>
+<li>Ein für PHP beschreibbarer Speicher: bevorzugt außerhalb des öffentlichen Webverzeichnisses. Falls das Hosting dies verhindert, kann MaStunden einen durch den Webserver gesperrten Ordner im Programmverzeichnis verwenden. Dafür sind cURL, HTTPS und wirksame Apache-kompatible <code>.htaccess</code>-Zugriffssperren erforderlich. Der Speicher darf auch über keine andere Domain oder Alias öffentlich erreichbar sein.</li>
+<li>Genügend Speicher für Dokumente, das laufende Backup, ein Sicherheitsbackup und die Wiederherstellung. Bei einer Wiederherstellung zusätzlich Platz für einen zweiten Datenbankbestand einplanen.</li>
+</ul>
+<p>Die Anwendung benötigt keine Rewrite-Regeln, keine zusätzlichen Hintergrunddienste und keinen Cronjob. JavaScript erleichtert Bedienung und schrittweise Sicherung; der nächste Sicherungsschritt ist auch manuell anklickbar.</p>
+<p><strong>Wichtig zum Webhosting:</strong> MaStunden prüft die tatsächlich verfügbaren Möglichkeiten. Bei eingeschränktem Hosting testet der Installer den Zugriffsschutz über HTTPS, bevor er vertrauliche Daten speichert. Wirkt die Sperre nicht, bricht die Installation ab. Ein reiner HTML-Webspace reicht nicht aus.</p>
+<h2 id="section-39">3. Installation Schritt für Schritt</h2>
+<h3 id="section-40">Schritt 1 – Webspace vorbereiten</h3>
+<p>Richten Sie Ihre gewünschte Domain oder Subdomain und HTTPS beim Hoster ein, beispielsweise <code>stunden.example.org</code>. Notieren Sie Datenbankserver, Datenbankname, Datenbankbenutzer und Datenbankpasswort. Diese Angaben erhalten Sie aus dem Kundenbereich des Hostinganbieters.</p>
+<p>Laden Sie das ZIP-Paket herunter und entpacken Sie es auf Ihrem Computer. Lassen Sie die Ordnerstruktur innerhalb von <code>web/</code> unverändert.</p>
+<h3 id="section-43">Schritt 2 – Dateien hochladen</h3>
+<p>Laden Sie <strong>nur den Inhalt des Ordners <code>web/</code></strong> in das Zielverzeichnis Ihrer Domain. Verwenden Sie nach Möglichkeit FTPS. ZIP-Dateien nicht einfach auf dem Webspace ablegen; die Programmdateien müssen entpackt übertragen werden.</p>
+<p>Für eine Unterverzeichnis-Installation, beispielsweise <code>/zeit/</code>, laden Sie den Inhalt von <code>web/</code> dorthin. Die Anwendung verwendet relative Verweise und benötigt keine fest eingetragene Domain.</p>
+<p>Ein Installationsschlüssel ist nicht erforderlich. MaStunden legt den geschützten Speicher während der Einrichtung automatisch an.</p>
+<h3 id="section-47">Schritt 3 – Installationsassistent öffnen</h3>
+<p>Öffnen Sie:</p>
+<pre>https://stunden.example.org/install.php</pre>
+<p>Bei einer Unterverzeichnis-Installation ergänzen Sie den Unterordner. Der Assistent prüft die wichtigsten PHP-Voraussetzungen und HTTPS.</p>
+<p>Tragen Sie ein:</p>
+<ol>
+<li>Die Datenbankzugangsdaten Ihres Hosters. Servername häufig <code>localhost</code>, verbindlich ist die Angabe des Anbieters. Standardport ist 3306.</li>
+<li>Ein Tabellenpräfix, beispielsweise <code>ma_</code>. Bei weiteren Installationen ein anderes Präfix wählen; eine eigene Datenbank pro Unternehmen ist vorzuziehen.</li>
+<li>Ihren Unternehmensnamen, Ihren Namen, eine E-Mail-Adresse als Anmeldenamen und ein eigenes Passwort mit 12 bis 72 Zeichen.</li>
+<li>Das Passwort zur Bestätigung erneut eingeben. In der breiten Ansicht stehen beide Passwortfelder nebeneinander, auf dem Smartphone untereinander.</li>
+</ol>
+<p>Klicken Sie auf <strong>„MaStunden installieren“</strong>. Die Datenbank muss bereits existieren; MaStunden erstellt nur die Tabellen. Tabellen eines bereits verwendeten Präfixes werden nicht überschrieben.</p>
+<h3 id="section-59">Optional: Einrichtung über FTP / FTPS</h3>
+<p>Unter „Dateien mit FTP / FTPS einrichten“ aktivieren Sie „FTP-Einrichtung verwenden“. Tragen Sie Server, Port (üblicherweise 21), FTP-Benutzer, FTP-Passwort und den FTP-Ordner ein, in dem <code>install.php</code> liegt, beispielsweise <code>/public_html/mastunden</code>. Unternehmen und Administratorname sind bewusst leer und müssen selbst eingetragen werden.</p>
+<p>FTPS ist vorausgewählt und verschlüsselt Steuerverbindung und Dateiübertragung. Das Serverzertifikat wird geprüft. Einfaches FTP ist optional, überträgt aber Zugangsdaten und Dateien unverschlüsselt. SFTP wird nicht unterstützt. Für diese Option benötigt PHP zusätzlich die Erweiterung <strong>cURL mit FTP- und TLS-Unterstützung</strong>.</p>
+<p>MaStunden prüft die Zuordnung des FTP-Ordners, erstellt den privaten Speicher und schreibt die Konfiguration über FTP. Die FTP-Zugangsdaten werden ausschließlich während dieses Installationsaufrufs verwendet und weder in der Konfiguration noch in der Sitzung gespeichert. Nach einem Fehler müssen Sie das FTP-Passwort erneut eingeben.</p>
+<p>Der FTP-Zugang muss den übergeordneten Ordner des öffentlichen Webverzeichnisses erreichen. PHP und FTP benötigen passende gemeinsame Rechte: Der private Ordner erhält 0770, die Konfiguration 0640; der Server muss diese Rechte setzen können. Der Assistent prüft Lesen und Schreiben durch PHP. FTP kann eine Hosting-Sperre nicht umgehen. Nach der Einrichtung arbeitet MaStunden direkt mit dem privaten Speicher; ein dauerhafter FTP-Zugang ist nicht erforderlich.</p>
+<h3 id="section-64">Schritt 4 – Wiederherstellungsschlüssel aufbewahren</h3>
+<p>Nach erfolgreicher Einrichtung zeigt MaStunden einmalig einen <strong>Administrator-Wiederherstellungsschlüssel</strong> an. Speichern Sie diesen in Ihrem Passwortmanager. Dieser Schlüssel dient ausschließlich dazu, einen verlorenen Administratorzugang später wiederherzustellen; für die Installation müssen Sie keinen Schlüssel eingeben.</p>
+<p>Die Installation erstellt <code>config.php</code> mit den Zugangsdaten und dem Speicherpfad. <strong>Diese Datei bei Updates niemals überschreiben.</strong> Der Installationsassistent ist nach erfolgreicher Einrichtung automatisch gesperrt. Entfernen Sie zusätzlich <code>install.php</code> per FTP, wenn Sie möchten; für den normalen Betrieb wird diese Datei nicht benötigt.</p>
+<h3 id="section-67">Automatisch angelegter Speicher</h3>
+<p>MaStunden versucht zuerst, neben dem öffentlichen Webverzeichnis einen eigenen privaten Ordner anzulegen. Verhindern Hostingrechte oder <code>open_basedir</code> dies, legt es automatisch einen Ordner <code>mastunden-storage-&lt;zufällige Kennung&gt;</code> im Programmverzeichnis an und sperrt diesen mit <code>.htaccess</code> für direkte Webzugriffe.</p>
+<p>Vor Verwendung prüft der Installer eine harmlose Zufallsdatei über HTTPS zunächst auf Erreichbarkeit. Anschließend aktiviert er die Sperre und verlangt für TXT, PDF, JPG, PNG, ZIP, JSON, Protokoll-, Lock- und PHP-Testdateien jeweils HTTP 403. Ohne erfolgreiche Prüfung wird abgebrochen und der Testordner entfernt. Danach erhält der Speicher zusätzlich die Dateirechte 0700. Bei jedem Anwendungsaufruf wird geprüft, ob die Sperrdatei unverändert vorhanden ist.</p>
+<p><strong>Den Speicherordner einschließlich <code>.htaccess</code> bei Updates immer erhalten.</strong> Keine zusätzliche Domain oder Alias auf diesen Ordner richten. Bei einem Hostingwechsel oder Änderungen der Webserverkonfiguration neu installieren und den Speicherschutz erneut prüfen; eine lokale Prüfung der Sperrdatei kann geänderte Serverregeln nicht erkennen. Die Konfiguration enthält den automatisch ermittelten Speicherpfad. Änderungen am Server sind auf kompatiblem Shared Hosting nicht erforderlich.</p>
+<h2 id="section-71">4. Erste Einrichtung</h2>
+<h3 id="section-72">Unternehmen und Logos</h3>
+<p>Öffnen Sie <strong>Unternehmen</strong>. Hinterlegen Sie Name, Adresse, Ansprechpartner, E-Mail, Telefonnummer, Website, Standort, Bundesland und Zeitzone sowie Links zu Impressum und Datenschutzerklärung.</p>
+<ul>
+<li><strong>Firmenlogo:</strong> Logo des nutzenden Unternehmens. Es erscheint bei Anmeldung, Navigation und Berichten.</li>
+<li><strong>Feste Entwicklerkennzeichnung:</strong> „Entwickelt von“ mit dem mitgelieferten IT-Janz-Logo erscheint ausschließlich bei Installation, Anmeldung und im Menü. Diese Kennzeichnung ist nicht über die Anwendung änderbar. Unter Unternehmen lässt sich ausschließlich das eigene Firmenlogo des Kunden hochladen.</li>
+<li>Unterstützt werden PNG und JPG bis 3000 × 3000 Pixel, innerhalb des Uploadlimits. Für eine gute Darstellung sind kleinere, sauber zugeschnittene Logos ausreichend.</li>
+<li>Akzentfarbe ist frei wählbar. Achten Sie auf einen ausreichenden Kontrast zu weißer Schrift.</li>
+</ul>
+<p>Das Original-Logo von IT-Janz ist im Paket enthalten. Die Entwicklerkennzeichnung besteht aus „Entwickelt von“ und dem Logo.</p>
+<h3 id="section-81">Mitarbeiter anlegen</h3>
+<p>Unter <strong>Mitarbeiter → Mitarbeiter anlegen</strong> tragen Sie Name, E-Mail, Personalnummer, Rolle, Beschäftigungsbeginn, optionales Beschäftigungsende und jährlichen Urlaubsanspruch ein. Legen Sie ein vorläufiges Passwort fest und übermitteln Sie es persönlich über einen geeigneten sicheren Kanal. Beim ersten Login muss es geändert werden.</p>
+<p>MaStunden versendet keine Einladungs-E-Mails. Eine öffentliche Registrierung ist nicht vorhanden.</p>
+<p>Alle neuen Konten einschließlich des ersten Administrators starten ohne Arbeitszeitmodell und ohne vorgegebenen Urlaubsanspruch. Ein leeres Urlaubsfeld bedeutet 0 Tage. Sollstunden entstehen erst, wenn Sie unter Mitarbeiter bearbeiten ausdrücklich ein Arbeitszeitmodell hinterlegen. Firma, Administratorname und E-Mail sind im Installer leer.</p>
+<h3 id="section-85">Arbeitszeitmodelle und Startsalden</h3>
+<p>Arbeitszeitmodelle gelten ab einem Datum und bleiben historisch erhalten. Für Teilzeit lassen sich die Stunden je Wochentag einzeln einstellen. Ist der Beschäftigungsbeginn früher als der Start der Nutzung, tragen Sie Arbeitszeiten nach oder buchen Sie einen nachvollziehbaren Startsaldo. Sonst werden nicht erfasste frühere Solltage als Minusstunden berücksichtigt.</p>
+<p>Die Korrekturbuchung verwendet <strong>Dezimalstunden</strong>: <code>1,5</code> bzw. je nach Browser <code>1.5</code> entspricht 1 Stunde 30 Minuten. Berichte zeigen dagegen <strong>Stunden:Minuten</strong>, also <code>1:30</code>. Negative Werte ziehen Stunden ab. Fehlerhafte Korrekturen werden durch eine Gegenbuchung berichtigt.</p>
+<p>Der Grund-Urlaubsanspruch wird bei der Anlage festgelegt. Abweichungen für einzelne Jahre, anteiliger Urlaub und Übertrag werden als begründete Urlaubskorrektur im betreffenden Jahr gebucht. Ein automatischer Verfall oder eine automatische anteilige Berechnung findet nicht statt.</p>
+<h3 id="section-89">Feiertage und Hinweise</h3>
+<p>Feiertage werden unter <strong>Unternehmen</strong> für den jeweiligen Standort eingetragen. Das Bundesland allein erzeugt noch keinen Feiertagskalender. Prüfen und pflegen Sie die konkreten Feiertage jährlich. Änderungen an Feiertagen eines gesperrten Monats erfordern zuerst dessen Wiederöffnung.</p>
+<p>Pausen- und Ruhezeithinweise sind konfigurierbare Prüfhilfen. Sie ziehen keine Pausen automatisch ab. Gesetzliche und betriebliche Regeln müssen zum Unternehmen passen. Die Software ist nicht als rechtlich zertifiziertes Zeiterfassungssystem ausgewiesen.</p>
+<p>„Sonstige Abwesenheit“ kann vor ihrer ersten Verwendung umbenannt und mit oder ohne Zeitgutschrift konfiguriert werden. Eine bereits verwendete Regel wird nicht rückwirkend umdefiniert.</p>
+<h2 id="section-93">5. Kurzanleitung für Mitarbeiter</h2>
+<ul>
+<li><strong>Übersicht:</strong> Arbeit starten, Pause beginnen, Pause beenden und Arbeit beenden. Start und Ende werden minutengenau gespeichert. Ein offener Timer bleibt auch nach Abmeldung oder Schließen des Browsers bestehen.</li>
+<li><strong>Arbeitszeiten:</strong> Fehlende Zeiten manuell nachtragen. Pro Tag sind mehrere Blöcke und pro Block mehrere Pausen möglich. Pausen müssen vollständig, zeitlich sortiert und innerhalb des Arbeitsblocks liegen.</li>
+<li><strong>Nachtschichten:</strong> Beginn und Ende jeweils mit dem tatsächlichen Datum eingeben. Die Zeit wird auf die betroffenen Kalendertage und Monate verteilt.</li>
+<li><strong>Zeitumstellung:</strong> Eine nicht existierende Frühlings-Uhrzeit wird abgewiesen. Bei der doppelten Stunde im Herbst unter „Zeitumstellung“ den richtigen UTC-Abstand auswählen: in Deutschland gewöhnlich +02:00 oder +01:00. Die Berechnung verwendet die tatsächlich vergangene Zeit.</li>
+<li><strong>Abwesenheiten:</strong> Urlaub, Freizeitausgleich und sonstige Abwesenheiten beantragen. Krankheit wird als Meldung unmittelbar erfasst. Keine Diagnose erforderlich. Ganze, halbe oder stundenweise Tage sind möglich; stundenweise Angaben gelten für jeden ausgewählten Tag.</li>
+<li><strong>Dokumente:</strong> PDF, JPG oder PNG mit Titel, Kategorie und optionalem Abwesenheitsbezug hochladen. Rückmeldungen erscheinen dort und in den Mitteilungen. Downloads erfordern eine Anmeldung.</li>
+<li><strong>Monatsberichte:</strong> Einen abgeschlossenen Monat prüfen, als PDF/CSV exportieren und zur Prüfung einreichen. Offene Timer und noch nicht entschiedene Abwesenheitsanträge müssen zuvor geklärt werden.</li>
+<li><strong>Mein Konto:</strong> Passwort ändern. Nach einer Stunde ohne Aktivität ist eine erneute Anmeldung notwendig.</li>
+</ul>
+<p>Mitarbeiter sehen nur ihre eigenen Daten. Ein Mitarbeiter kann offene Abwesenheitsanträge zurückziehen. Freigegebene Abwesenheiten werden durch Administratoren storniert.</p>
+<h2 id="section-105">6. Kurzanleitung für Administratoren</h2>
+<p>Unter <strong>Freigaben</strong> entscheiden Sie über Abwesenheitsanträge und öffnen eingereichte Monatsberichte. Krankheit erscheint als bereits erfasste Meldung im Abwesenheitsbereich.</p>
+<p>Unter <strong>Arbeitszeiten</strong>, <strong>Abwesenheiten</strong>, <strong>Dokumente</strong> und <strong>Monatsberichte</strong> wählen Sie den betreffenden Mitarbeiter. Im Dokumentenbereich gibt es zusätzlich eine Ansicht für alle Mitarbeiter.</p>
+<p>Ein Monatsabschluss folgt dem Ablauf <strong>offen → eingereicht → freigegeben</strong>. Eingereichte und freigegebene Monate sind für Änderungen gesperrt, auch für Administratoren. Administratoren geben sie mit Begründung zurück oder öffnen sie erneut. Die Freigabe speichert einen festen Berichtsstand mit den Arbeitsblöcken und Pausen.</p>
+<p>Korrekturen an fremden Arbeitszeiten benötigen eine Begründung. Änderungen werden mit Person und Zeitpunkt sowie vorherigen und neuen Werten protokolliert. Das Protokoll ist in der Anwendung nicht editierbar. Es ersetzt keine extern manipulationssichere Archivlösung.</p>
+<p>PDF-Exporte enthalten Monatszettel und bei vorhandenen Arbeitszeiten einen Einzelnachweis. Der Teamexport erstellt mehrere Monatszettel in einer PDF; der Gesamtbericht zeigt die Monatssummen nebeneinander. CSV verwendet Semikolon, UTF-8 und Minutenwerte für die Weiterverarbeitung. Maximal 250 Mitarbeiter pro Export; bei Hosting-Laufzeitgrenzen kleinere Gruppen auswählen.</p>
+<p>Ganztägige Abwesenheiten und Arbeitszeiten dürfen sich nicht überschneiden. Halbtägige und stundenweise Gutschriften können mit geleisteter Arbeit kombiniert werden; prüfen Sie dabei eine korrekte betriebliche Anrechnung. Freizeitausgleich erzeugt keine zusätzliche Zeitgutschrift und vermindert damit das Stundenkonto um die ausfallende Sollzeit.</p>
+<h2 id="section-112">7. Backup erstellen</h2>
+<ol>
+<li>Öffnen Sie <strong>Backup &amp; Wiederherstellung</strong>.</li>
+<li>Wählen Sie ein starkes Backup-Passwort mit mindestens 12 Zeichen.</li>
+<li>Starten Sie das vollständige Backup und lassen Sie die Seite geöffnet.</li>
+<li>MaStunden verarbeitet Tabellen in Abschnitten und Dateien einzeln. Währenddessen sind normale Zugriffe gesperrt, damit keine Mitarbeiterdaten zwischen den Schritten geändert werden.</li>
+<li>Laden Sie die fertige ZIP-Datei herunter. Bewahren Sie Archiv und Passwort getrennt und außerhalb des Webservers auf.</li>
+</ol>
+<p>Das Archiv ist AES-256-verschlüsselt und enthält Datenbanktabellen, hochgeladene Dokumente, Logos, Einstellungen und Prüfsummen. Es enthält auch Passwort-Hashes und personenbezogene Daten; behandeln Sie es vertraulich. Eine passwortgestützte Integritätsprüfung wird bei der Wiederherstellung durchgeführt.</p>
+<p>Datenbankzugangsdaten und der absolute Speicherpfad bleiben in <code>config.php</code> und sind nicht Bestandteil des Anwendungsbackups. Sichern Sie diese Datei für einen vollständigen manuellen Umzug separat und geschützt. Das Programm selbst bewahren Sie als Installationspaket auf.</p>
+<p>Es gibt keine automatischen Backups ohne zuverlässigen externen Zeitgeber. Richten Sie einen regelmäßigen manuellen Ablauf ein. Fertige temporäre Backup-Dateien auf dem Webserver werden nach 24 Stunden beim nächsten Administrator-Seitenaufruf entfernt; die Bereinigung ist ohne Cronjob nicht minutengenau garantiert.</p>
+<h2 id="section-123">8. Wiederherstellung und Serverumzug</h2>
+<h3 id="section-124">Wiederherstellung im Browser</h3>
+<ol>
+<li>Verwenden Sie ausschließlich eigene, vertrauenswürdige MaStunden-Backups aus <strong>MaStunden 1.0.0, 1.0.1, 1.0.2, 1.0.3 oder 1.0.5</strong>. Diese Versionen verwenden das kompatible Datenbankschema 1.</li>
+<li>Wählen Sie das ZIP-Archiv und dessen Passwort aus.</li>
+<li>Legen Sie zusätzlich ein Passwort für das automatisch erstellte Sicherheitsbackup des aktuellen Zustands fest.</li>
+<li>Geben Sie <code>WIEDERHERSTELLEN</code> ein und starten Sie den Ablauf.</li>
+<li>MaStunden sichert zunächst den aktuellen Zustand, prüft das Archiv und importiert es in vorläufige Tabellen. Die bestehenden Tabellen bleiben bis zur abschließenden Bestätigung erhalten.</li>
+<li>Laden Sie das angebotene Sicherheitsbackup herunter.</li>
+<li>Bestätigen Sie zuletzt mit <code>DATEN ERSETZEN</code>. Die Tabellen werden zusammen ausgetauscht. Alle bisherigen Sitzungen werden ungültig.</li>
+<li>Melden Sie sich mit einem Konto <strong>aus dem eingespielten Backup</strong> an. Auch der Administrator-Wiederherstellungsschlüssel stammt anschließend aus diesem Backup.</li>
+</ol>
+<p>Nach einem normalen Abbruch vor dem Tabellentausch bleibt die vorhandene Datenbank erhalten. Bei einer unterbrochenen Abschlussphase bietet die Anwendung eine Bereinigung an. Den privaten Status <code>maintenance.json</code> nicht manuell löschen, solange der Zustand unklar ist.</p>
+<h3 id="section-136">Archive über dem Hosting-Uploadlimit</h3>
+<p>Laden Sie das verschlüsselte Archiv per FTP unter dem Namen <code>incoming-backup.zip</code> in den <strong>privaten</strong> Speicherordner hoch. Aktivieren Sie im Wiederherstellungsformular „Statt Upload … verwenden“. Die Datei darf ausschließlich im geschützten Speicher liegen, niemals in einem öffentlich abrufbaren Ordner. Entfernen Sie die eingehende Datei nach erfolgreicher Wiederherstellung per FTP.</p>
+<p>Die Browser-Auswahl ist auf 512 MB begrenzt, zusätzlich gelten die oft deutlich kleineren PHP-Uploadlimits. Per FTP bereitgestellte Archive dürfen maximal 2 GB groß sein; der entpackte Inhalt ebenfalls maximal 2 GB. Ein einzelner Sicherungsbestandteil darf bei der Wiederherstellung höchstens 64 MB groß sein. Größere Installationen benötigen einen vom Hoster durchgeführten Datenbank-/Dateiumzug. Die Sicherung ist für kleine und mittlere Teams gedacht; prüfen Sie größere Bestände mit den konkreten Hostinglimits.</p>
+<h3 id="section-139">Umzug auf einen neuen Webserver</h3>
+<p>Installieren Sie MaStunden 1.0.7 auf dem neuen Server frisch mit eigener Datenbank und eigenem Präfix. Der private Ordner wird automatisch erstellt. Spielen Sie anschließend das Backup ein. Die neuen Datenbankzugangsdaten und der neue Speicherpfad bleiben bestehen, während Unternehmensdaten, Benutzer und Dokumente aus dem Backup übernommen werden.</p>
+<p>Öffnen Sie danach Stichproben von Monatsberichten und Dokumenten, prüfen Sie HTTPS und Unternehmensangaben. Erst nach erfolgreicher Kontrolle sollte die alte Installation außer Betrieb gehen.</p>
+<h2 id="section-142">9. Updates</h2>
+<p>Vor jedem Update:</p>
+<ol>
+<li>Verschlüsseltes Anwendungsbackup erstellen, herunterladen und Passwort sichern.</li>
+<li>Vorhandene Programmdateien per FTP herunterladen; <code>config.php</code> separat geschützt sichern.</li>
+<li>Laufende Erfassungen und geplante Arbeiten berücksichtigen und ein Wartungsfenster vereinbaren.</li>
+</ol>
+<p>Zum Schutz vor gemischten Programmversionen kann vor dem Upload einer künftigen Version ein normales Backup gestartet und dessen Seite vor Abschluss geschlossen werden. Dadurch bleibt MaStunden im Wartungsmodus. Aktualisieren Sie dann nur die Programmdateien. Anschließend unter Backup &amp; Wiederherstellung den angefangenen Sicherungsvorgang abbrechen. Das vorher vollständig heruntergeladene Backup bleibt Ihre Rückfallsicherung.</p>
+<p><strong>Nie überschreiben:</strong> <code>config.php</code> und der private Speicherordner. <code>install.php</code> wird für Updates nicht erneut ausgeführt.</p>
+<p>Version 1.0.7 verwendet unverändert Schema-Version 1. Beim Update von 1.0.0, 1.0.1 oder 1.0.2 werden nur Programmdateien ersetzt; <code>config.php</code> und der vorhandene private Ordner bleiben erhalten. Es ist keine Neuinstallation und keine Datenbankmigration notwendig. Das initiale Schema wird im Installer angelegt; eine bereits installierte Version wird nicht stillschweigend verändert. Zukünftige Updates mit Schemaänderung müssen eigene versionierte Migrationen und passende Updatehinweise mitbringen. Eine universelle Migration unbekannter zukünftiger Versionen ist nicht enthalten.</p>
+<p>Bei einem fehlgeschlagenen Update die gesicherten Programmdateien zurückspielen. Wurde auch das Schema geändert, verwenden Sie zusätzlich das passende Vorab-Backup nach den Updatehinweisen. Ein Datenbankbackup darf nur mit einer dazu kompatiblen Programmversion wiederhergestellt werden.</p>
+<h2 id="section-153">10. Datenschutz, Aufbewahrung und Betrieb</h2>
+<p>Administratoren können Konten deaktivieren. Historische Arbeitszeiten bleiben erhalten. Es gibt bewusst keinen unbestätigten Sammellöschknopf für Mitarbeiter mit allen Arbeitszeit- und Prüfungsdaten.</p>
+<p>Für Dokumente kann unter <strong>Unternehmen</strong> eine Aufbewahrungsfrist in Tagen festgelegt werden. <code>0</code> bedeutet: keine automatische Löschfreigabe. Die Bereinigung wird manuell mit Begründung ausgelöst und betrifft nur erledigte oder zurückgewiesene Dokumente. Prüfen Sie vorher bestehende Aufbewahrungspflichten. Arbeitszeiten, Monatsabschlüsse und Prüfprotokolle haben keine pauschale automatische Löschfrist.</p>
+<p>Die Anwendung enthält keinen Virenscanner. Dateiformate werden geprüft, Dokumente werden nur als authentifizierter Download ausgeliefert und im geprüften geschützten Speicher abgelegt. Eine zusätzliche Malwareprüfung durch den Hoster kann sinnvoll sein. Hochgeladene Unterlagen nicht unbesehen öffnen.</p>
+<p>Bei Uploads und Sicherungen gelten auch Speicherplatz- und Laufzeitgrenzen des Hosters. Prüfen Sie regelmäßig Backups durch eine Wiederherstellung in einer separaten Testinstallation. Ein heruntergeladenes Archiv allein ist noch kein nachgewiesener Wiederherstellungserfolg.</p>
+<h2 id="section-158">11. Hilfe bei Problemen</h2>
+<p><strong>„Privaten Speicher nicht automatisch anlegen“:</strong> Auch der automatisch geprüfte Hosting-Speicher konnte nicht eingerichtet werden. PHP-Schreibrechte, cURL und die Wirksamkeit der <code>.htaccess</code>-Sperre beim Hoster prüfen lassen. Sie müssen keinen Speicherpfad in MaStunden eingeben.</p>
+<p><strong>„Datenbankverbindung … fehlgeschlagen“:</strong> Servername, Port, Datenbankname, Benutzer und Passwort prüfen. Der Benutzer muss die benötigten Tabellenrechte besitzen. Bei einer erneuten Einrichtung ein noch unbenutztes Präfix verwenden.</p>
+<p><strong>Weiße Seite / Fehler 500:</strong> PHP-Version und Erweiterungen im Hostingpanel prüfen. Manche Hoster haben unterschiedliche PHP-Versionen je Subdomain. PHP-Fehlerprotokoll des Hosters ansehen. Interne Fehlercodes stehen zusätzlich im privaten <code>errors.log</code>; dort werden keine Dokumentinhalte oder Zugangspasswörter protokolliert.</p>
+<p><strong>HTTPS wird nicht erkannt:</strong> Mit <code>https://</code> aufrufen. Bei Reverse-Proxy-Hosting muss der Hoster die HTTPS-Information korrekt an PHP weiterreichen. Die Produktivinstallation nicht mit dem Entwicklungs-Testschalter betreiben.</p>
+<p><strong>Upload schlägt fehl:</strong> Anwendungsgrenze, <code>upload_max_filesize</code>, <code>post_max_size</code> und freien Speicher vergleichen. Die tatsächlich nutzbare Grenze ist die kleinste davon. Große Backups alternativ per FTP privat bereitstellen.</p>
+<p><strong>Monat lässt sich nicht bearbeiten:</strong> Unter Monatsberichte zuerst mit Begründung zurückgeben oder wieder öffnen. Auch rückwirkende Arbeitszeitmodelle und Feiertage beachten diese Sperre.</p>
+<p><strong>Backup bleibt stehen:</strong> Seite geöffnet lassen und gegebenenfalls „Nächsten Schritt“ anklicken. Nach Ablauf der Sitzung erneut als Administrator anmelden und den Vorgang kontrolliert abbrechen und neu starten. Nicht einzelne Wartungsdateien löschen.</p>
+<p><strong>Mitarbeiter hat Passwort vergessen:</strong> Administrator setzt unter Mitarbeiter bearbeiten ein neues vorläufiges Passwort. Der Mitarbeiter muss es beim nächsten Login ändern.</p>
+<p><strong>Administrator hat Passwort vergessen:</strong> Auf der Login-Seite „Passwort vergessen?“ wählen und E-Mail, Administrator-Wiederherstellungsschlüssel und neues Passwort eingeben. Danach wird ein neuer einmalig sichtbarer Wiederherstellungsschlüssel ausgegeben. Ohne diesen Schlüssel ist die Wiederherstellung über die Oberfläche nicht möglich; ein weiterer Administrator kann das Konto zurücksetzen.</p>
+<h2 id="section-168">12. Vor dem ersten produktiven Einsatz</h2>
+<p>Die dokumentierten Prüfungen verwenden synthetische Testdaten. Prüfen Sie vor der Nutzung die Voraussetzungen Ihres konkreten Hostingtarifs und führen Sie eine Testanmeldung sowie eine Sicherung durch.</p>
+<p>Prüfen Sie nach Installation mit zwei eigenen Testmitarbeitern: getrennte Ansichten, Zeiterfassung und Pausen, Upload/Download, Monatsfreigabe, PDF-/CSV-Ausgabe, Smartphone-Bedienung und Backup/Wiederherstellung. Testen Sie dabei die tatsächlich verwendeten Browser Chrome, Firefox, Safari oder Edge auf Ihren Geräten. Der lokale visuelle Test erfolgte im Codex-In-App-Browser bei Desktop- und Smartphone-Größen; separate vollständige Tests aller Browser wurden nicht durchgeführt.</p>
+<p>SMTP-Versand, automatische Backup-Zeitpläne, Projekt-/Kundenabrechnung, GPS-Erfassung, gemeinsame SaaS-Mandantenverwaltung und Lohnabrechnung sind nicht Bestandteil dieser Version. Die im Auftrag optional genannten E-Mails und automatischen Backups werden nicht vorausgesetzt. Für weitere Unternehmen verwenden Sie getrennte Installationen mit eigenen privaten Ordnern und vorzugsweise eigenen Datenbanken.</p>
+<h2 id="section-172">Änderungen in Version 1.0.5</h2>
+<p>Keine voreingestellten Arbeitszeitmodelle oder Urlaubstage. Festes IT-Janz-Logo an den drei vorgesehenen Stellen. Abwesenheitsanträge können ohne Begründung freigegeben oder abgelehnt werden. Andere begründungspflichtige Korrekturen bleiben unverändert. Vereinheitlichte Dropdowns und Textfelder; überarbeitete mobile Formulare, Kennzahlen und Navigation. Bestehende Daten aus alten Backups behalten ihre bisherigen Arbeitszeitmodelle und Urlaubsansprüche.</p>
+<h2 id="section-174">Darstellung in Version 1.0.5</h2>
+<p>Die Versionsnummer wird ausschließlich unter Backup &amp; Wiederherstellung angezeigt. Das Menü trägt den Produktnamen MaStunden ohne zusätzlichen Unternehmensnamen. Der wiederholte Seitenfuß entfällt. Firmenlogos werden proportional in begrenzten Flächen dargestellt; das feste Entwicklerlogo steht unter „Entwickelt von“. Für das Update nur index.php, lib/ und assets/ übertragen; config.php und den geschützten Speicher erhalten.</p>
+<h2 id="section-176">Änderungen in Version 1.0.6: Rücknahme und Löschung</h2>
+<p>Im Änderungsprotokoll stehen Begründungen direkt sichtbar oberhalb der aufklappbaren Details. Gelöschte Zeiteinträge und Dokumente sowie stornierte Abwesenheiten sind über Zeitpunkt, Aktion und Datensatznummer nachvollziehbar. Ältere Einträge ohne gespeicherte Begründung werden entsprechend gekennzeichnet.</p>
+<p>Mitarbeiter können eigene offene oder abgelehnte Abwesenheitsanträge mit Begründung zurückziehen. Der Status lautet danach „Zurückgezogen / storniert“. Ein bereits zurückgezogener Antrag kann nicht erneut entschieden werden. Die frühere Ablehnung bleibt im Protokoll nachvollziehbar, solange das Konto nicht endgültig gelöscht wird.</p>
+<p>Unter <strong>Mitarbeiter → Bearbeiten → Mitarbeiter dauerhaft löschen</strong> kann ein Administrator ein Konto einschließlich zugehöriger Zeiten, Abwesenheiten, Dokumente, Modelle, Monatsabschlüsse, Korrekturen, Mitteilungen und personenbezogener Protokolle löschen. Dafür sind Administratorpasswort, Begründung ohne personenbezogene Angaben, die Bestätigung <strong>MITARBEITER LÖSCHEN</strong> und die Bestätigung zur Prüfung der Aufbewahrungspflichten erforderlich. Das angemeldete eigene Konto und der letzte aktive Administrator sind geschützt. Eine neutral gehaltene Löschbegründung mit Mengenangaben bleibt protokolliert; die gelöschte Person wird dabei nicht benannt.</p>
+<p>Alle vorhandenen Sicherungsarchive dieser Installation auf dem Server werden ebenfalls gelöscht, da sie die Person enthalten können. Bereits heruntergeladene Backups, Exporte und Sicherungen des Hostinganbieters werden nicht automatisch entfernt. Eine Wiederherstellung alter Sicherungen kann gelöschte Daten zurückbringen. Diese Kopien und Freitextangaben in anderen Datenbeständen müssen organisatorisch separat geprüft werden. Bei Dateisystemfehlern wird eine unvollständige Dateilöschung gemeldet und beim nächsten Aufruf erneut versucht.</p>
+<p>Die Löschfunktion allein ist keine Garantie für die Erfüllung sämtlicher Datenschutzpflichten. Gesetzliche Aufbewahrungspflichten können einer sofortigen Löschung entgegenstehen; in diesem Fall zunächst Konto deaktivieren und den notwendigen Datenbestand klären. Quelle: BfDI, Kurzpapier Nr. 11, Recht auf Löschung: https://www.bfdi.bund.de/SharedDocs/Downloads/DE/DSK/Kurzpapiere/20170829_Kurzpapier_11_RechtaufVergessenwerden.html</p>
+<p>Für dieses Update ist keine Datenbankmigration erforderlich. Bestehende Daten werden beim Hochladen der Programmdateien nicht gelöscht; Löschungen erfolgen ausschließlich durch die neue bestätigte Aktion. Frühere als „Abgelehnt“ gespeicherte Stornierungen werden nicht automatisch umgedeutet.</p>
+<h2 id="section-183">Version 1.0.7: Mitteilungen und Entwicklerlogo</h2>
+<p>Die Übersicht zeigt standardmäßig nur ungelesene Mitteilungen. Mit „Gelesene anzeigen“ erscheinen auch bereits gelesene Einträge; „Gelesene ausblenden“ kehrt zur Standardansicht zurück. Die Einträge werden dabei nicht gelöscht. Ältere Mitteilungen sind über die Blätterfunktion erreichbar. Nach „Als gelesen markieren“ kehrt die Anzeige zur Standardansicht zurück. „Entwickelt von“ steht mittig über dem IT-Janz-Logo. Keine Datenbankmigration nötig.</p></main><footer>MaStunden 1.0.7 · Für eigenständige Unternehmensinstallationen auf Ihrer Domain.</footer></body></html>

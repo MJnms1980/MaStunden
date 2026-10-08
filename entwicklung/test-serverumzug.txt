@@ -1,0 +1,52 @@
+PASS fresh subdirectory installation
+PASS wrong backup password rejected
+PASS upload backup from different installation
+PASS fresh restore chunk 0
+PASS fresh restore chunk 1
+PASS fresh restore chunk 2
+PASS fresh restore chunk 3
+PASS fresh restore chunk 4
+PASS fresh restore chunk 5
+PASS fresh restore chunk 6
+PASS fresh restore chunk 7
+PASS fresh restore chunk 8
+PASS fresh restore chunk 9
+PASS fresh restore chunk 10
+PASS fresh restore chunk 11
+PASS fresh restore chunk 12
+PASS fresh restore chunk 13
+PASS fresh restore chunk 14
+PASS fresh restore chunk 15
+PASS fresh restore chunk 16
+PASS fresh restore chunk 17
+PASS fresh restore chunk 18
+PASS fresh restore chunk 19
+PASS fresh restore chunk 20
+PASS fresh restore chunk 21
+PASS fresh restore chunk 22
+PASS fresh restore chunk 23
+PASS fresh restore chunk 24
+PASS fresh restore chunk 25
+PASS fresh restore chunk 26
+PASS fresh restore chunk 27
+PASS fresh restore chunk 28
+PASS fresh restore chunk 29
+PASS fresh restore chunk 30
+PASS fresh restore chunk 31
+PASS fresh restore chunk 32
+PASS fresh restore chunk 33
+PASS fresh restore chunk 34
+PASS fresh restore chunk 35
+PASS fresh restore chunk 36
+PASS fresh restore chunk 37
+PASS fresh restore chunk 38
+PASS fresh restore chunk 39
+PASS fresh restore chunk 40
+PASS fresh restore chunk 41
+PASS fresh restore chunk 42
+PASS restore into empty company completed
+PASS restored administrator login
+PASS documents restored on separate storage
+PASS foreign-prefix restored report
+PASS last administrator protected
+ALL FRESH RESTORE TESTS PASSED

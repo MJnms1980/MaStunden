@@ -1,0 +1,14 @@
+.DS_Store
+.env
+.env.*
+**/config.php
+**/config-new.php
+**/install-lock.php
+**/setup-key.*
+**/*private*/
+**/storage/
+**/uploads/
+**/backups/
+*.zip
+*.log
+__pycache__/
