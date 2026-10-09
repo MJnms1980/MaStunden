@@ -1,0 +1,11 @@
+version: 2
+updates:
+  # Das Docker-Image wird nur für die lokale Entwicklungsumgebung genutzt.
+  - package-ecosystem: "docker"
+    directory: "/entwicklung"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Europe/Berlin"
+    open-pull-requests-limit: 3
