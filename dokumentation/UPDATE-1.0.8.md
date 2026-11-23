@@ -32,6 +32,10 @@ Nur wenn config.php bereits `storage_guard_sha256` enthält: den festen HTTPS-Pf
 
 Keine Adresse aus einer fremden Installation übernehmen. Diese Adresse wird spätestens nach einer Stunde erneut auf wirksame Webserversperren geprüft. Bei fehlendem Schutz oder einer fehlgeschlagenen Prüfung wird der Betrieb vorsorglich gesperrt. Die bestehende Prüfung der .htaccess-Prüfsumme bleibt erhalten. Speicher außerhalb des Webverzeichnisses benötigt diese Angabe nicht.
 
+## HTTPS-Header des Hosters
+
+Wenn der Hoster bereits einen HSTS-Header setzt, kann in config.php `hsts_managed_by_host => true` ergänzt werden. MaStunden setzt dann keinen zweiten HSTS-Header. Nur aktivieren, wenn der Hoster den Header tatsächlich liefert; nach der Änderung per HTTPS prüfen.
+
 ## Dateien austauschen und prüfen
 
 Den vollständigen Inhalt von web/ übertragen, insbesondere auch die neuen Dateien lib/files.php und lib/database.php. Vorhandene config.php und den privaten Speicher behalten. install.php niemals erneut zur Einrichtung ausführen; bei vorhandener config.php ist der Assistent gesperrt. Danach Anmeldung, Mitarbeiterübersicht, Dokumentzugriff, Berichte und Backup prüfen. Erst dann Wartungssperre aufheben.
