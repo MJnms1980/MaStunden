@@ -13,7 +13,7 @@ final class InstallerFtp
     {
         if (!extension_loaded('curl')) throw new RuntimeException('Für die FTP-Einrichtung muss der Hoster die PHP-Erweiterung cURL aktivieren.');
         $host = $options['host'];
-        if (!preg_match('/^[a-zA-Z0-9.-]+$/D', $host) || $options['port'] < 1 || $options['port'] > 65535 || !in_array($options['protocol'], ['ftp','ftps'], true)) throw new RuntimeException('FTP-Server, Port oder Verbindungstyp ungültig.');
+        if (!preg_match('/^[a-zA-Z0-9.-]+$/D', $host) || $options['port'] < 1 || $options['port'] > 65535 || $options['protocol'] !== 'ftps') throw new RuntimeException('FTP-Server, Port oder Verbindungstyp ungültig.');
         $this->base = 'ftp://' . $host . ':' . $options['port'];
         $path = rtrim($options['path'], '/');
         if ($path === '' || $path[0] !== '/' || preg_match('/[\\\\\r\n\x00]/', $path) || preg_match('~/(?:\.|\.\.)(?:/|$)~', $path) || str_contains($path, '//')) throw new RuntimeException('Bitte einen absoluten FTP-Ordner ohne Punktsegmente angeben, zum Beispiel /public_html/mastunden.');
@@ -37,7 +37,7 @@ final class InstallerFtp
     {
         $url = $this->base.'/%2F'.implode('/', array_map('rawurlencode', explode('/', ltrim($path, '/'))));
         $ch = curl_init($url); $stream = null;
-        $settings = [CURLOPT_USERNAME=>$this->options['username'], CURLOPT_PASSWORD=>$this->options['password'], CURLOPT_RETURNTRANSFER=>true, CURLOPT_CONNECTTIMEOUT=>10, CURLOPT_TIMEOUT=>30, CURLOPT_PROTOCOLS=>CURLPROTO_FTP, CURLOPT_PROXY=>'', CURLOPT_FTP_SKIP_PASV_IP=>true, CURLOPT_SSL_VERIFYPEER=>true, CURLOPT_SSL_VERIFYHOST=>2, CURLOPT_USE_SSL=>$this->options['protocol']==='ftps'?CURLUSESSL_ALL:CURLUSESSL_NONE];
+        $settings = [CURLOPT_USERNAME=>$this->options['username'], CURLOPT_PASSWORD=>$this->options['password'], CURLOPT_RETURNTRANSFER=>true, CURLOPT_CONNECTTIMEOUT=>10, CURLOPT_TIMEOUT=>30, CURLOPT_PROTOCOLS=>CURLPROTO_FTP, CURLOPT_PROXY=>'', CURLOPT_FTP_SKIP_PASV_IP=>true, CURLOPT_SSL_VERIFYPEER=>true, CURLOPT_SSL_VERIFYHOST=>2, CURLOPT_USE_SSL=>CURLUSESSL_ALL];
         if ($body !== null) { $stream=fopen('php://temp','w+'); fwrite($stream,$body); rewind($stream); $settings[CURLOPT_UPLOAD]=true; $settings[CURLOPT_INFILE]=$stream; $settings[CURLOPT_INFILESIZE]=strlen($body); }
         else $settings[CURLOPT_NOBODY]=true;
         if ($commands) $settings[CURLOPT_QUOTE]=$commands;

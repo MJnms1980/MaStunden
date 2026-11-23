@@ -66,7 +66,7 @@ function create_verified_web_storage(string $appDirectory): string
         foreach($files as $file)unlink($path.'/'.$file);
         // Additional filesystem protection; PHP remains the owner.
         if(!chmod($path,0700))throw new RuntimeException('Private Speicherrechte konnten nicht gesetzt werden.');
-        $GLOBALS['config']['storage_guard_sha256']=hash('sha256',$rule);
+        $GLOBALS['config']['storage_guard_sha256']=hash('sha256',$rule);$GLOBALS['config']['storage_public_url']=$base;
         return $path;
     }catch(Throwable $e){foreach($files as $file)@unlink($path.'/'.$file);@unlink($path.'/.htaccess');@rmdir($path);throw $e;}
 }
