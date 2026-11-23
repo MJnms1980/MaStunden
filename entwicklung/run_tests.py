@@ -12,7 +12,7 @@ with tempfile.TemporaryDirectory(prefix='mastunden-tests-') as temporary:
   call(['docker','network','create',net])
   call(['docker','run','-d','--name',db,'--network',net,'--network-alias','mastunden-db','-e','MYSQL_ROOT_PASSWORD=Synthetic-Root-Only-2026','-e','MYSQL_DATABASE=mastunden','-e','MYSQL_USER=mastunden','-e','MYSQL_PASSWORD=LocalTestApp-2026','mysql:8.4'])
   for _ in range(90):
-   probe=subprocess.run(['docker','exec','-e','MYSQL_PWD=Synthetic-Root-Only-2026',db,'mysql','-uroot','-e','SELECT 1'],capture_output=True)
+   probe=subprocess.run(['docker','exec','-e','MYSQL_PWD=LocalTestApp-2026',db,'mysql','--protocol=TCP','-hmastunden-db','-umastunden','mastunden','-e','SELECT 1'],capture_output=True)
    if probe.returncode==0:break
    time.sleep(1)
   else:raise RuntimeError('Isolated database did not become ready')
