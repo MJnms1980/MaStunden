@@ -4,7 +4,8 @@ require_once __DIR__.'/schema.php';
 function h(mixed $s): string { return htmlspecialchars((string)$s, ENT_QUOTES|ENT_SUBSTITUTE, 'UTF-8'); }
 function fail(string $message): never { throw new RuntimeException($message); }
 function cfg(): array { return $GLOBALS['config']; }
-function db(): PDO { static $db; return $db ??= new PDO('mysql:host='.cfg()['host'].';port='.cfg()['port'].';dbname='.cfg()['database'].';charset=utf8mb4',cfg()['username'],cfg()['password'],[PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION,PDO::ATTR_DEFAULT_FETCH_MODE=>PDO::FETCH_ASSOC,PDO::ATTR_EMULATE_PREPARES=>false]); }
+require_once __DIR__.'/database.php';
+function db(): PDO { static $db; return $db ??= database_connect(cfg()); }
 function table(string $name): string { if(!array_key_exists($name,schema())) fail('Unbekannte Tabelle.'); return '`'.cfg()['prefix'].$name.'`'; }
 function q(string $sql,array $args=[]): PDOStatement { $s=db()->prepare($sql); $s->execute($args); return $s; }
 function rows(string $name,string $where='1',array $args=[],string $tail=''): array { return q('SELECT * FROM '.table($name).' WHERE '.$where.' '.$tail,$args)->fetchAll(); }

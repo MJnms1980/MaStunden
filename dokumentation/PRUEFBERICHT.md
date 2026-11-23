@@ -1,26 +1,28 @@
-# MaStunden 1.0.7 – Prüfbericht
+# MaStunden 1.0.8 – Prüfbericht
 
-Stand: 8. Oktober 2026. Dieser Bericht beschreibt Funktionsprüfungen mit synthetischen Daten und enthält keine kundenspezifischen Installationsangaben. Testergebnisse sind keine Garantie für jeden Hostingtarif.
+Stand: 23. November 2026.
 
-## Geprüfte Funktionen
+## Durchgeführte Prüfungen
 
-- Lokale Neuinstallation mit PHP und MySQL; Administrator und weitere Konten ohne automatisch angelegtes Arbeitszeitmodell und ohne vorgegebenen Urlaubsanspruch.
-- Serverseitige Rollen- und Eigentümerprüfung, CSRF-Schutz, Sitzungsentwertung nach Kontolöschung bzw. Wiederherstellung.
-- Arbeitszeiten, Pausen, Überschneidungsprüfung, explizite Sollzeitmodelle, Abwesenheiten, Monatsfreigaben, PDF- und CSV-Ausgabe.
-- Dokumentupload, berechtigter Download und Ablehnung unberechtigter Zugriffe.
-- Verschlüsseltes Backup und Wiederherstellung in isolierten Testinstallationen. Kompatibilitätsprüfungen mit älteren Sicherungsformaten sind in den mitgelieferten Testnachweisen gesondert dokumentiert.
-- FTP-/FTPS-Installation in einer isolierten Umgebung mit eingeschränkten PHP-Rechten; abgewiesene falsche Zugangsdaten und abweichender Zertifikatsname.
-- HTTPS-Schutzprüfung für Speicher im Webverzeichnis: wirksame Sperren akzeptiert, unwirksame Regeln abgewiesen; Testdateien bereinigt.
-- Rücknahme abgelehnter Anträge, Begründungen im Änderungsprotokoll, bestätigte Mitarbeiterlöschung und Bereinigung zugehöriger Testdaten.
-- Gelesene Mitteilungen standardmäßig verborgen, auf Wunsch einblendbar und wieder ausblendbar.
-- Responsive Ansichten bei 320 und 390 Pixel Breite, einheitliche Feldmaße, festes Entwicklerlogo und zentrierte Beschriftung.
+- PHP-Syntaxprüfung und vollständige Integrationssuite unter PHP 8.3 und PHP 8.4: bestanden.
+- Isolierte Neuinstallation, Mitarbeiterrechte, CSRF, Monatsabschlüsse, Dokumentzugriff, PDF/CSV, verschlüsselte Sicherung und Wiederherstellung: bestanden.
+- Prozessabbruch vor und nach einem Datenbank-Commit: neue Dateien bzw. bestätigte Löschungen werden entsprechend dem dauerhaften Dateijournal bereinigt.
+- Ungültige Upload-Metadaten hinterlassen keine Dateien; Speicherlimit wird durchgesetzt.
+- Dokumentrückmeldungen bleiben im Änderungsprotokoll mit Vorher-/Nachherwerten erhalten.
+- Mitarbeiterlöschung bewahrt nicht betroffene Audit-Ereignisse und Sicherungsarchive; gelöschte Akteure werden anonymisiert.
+- Ausdrücklich bestätigte Archiventfernung funktioniert.
+- Parallele Lesezugriffe und blockierende Downloadausgabe halten andere Anfragen nicht mehr mit einer globalen exklusiven Sperre auf.
+- Die ausdrücklich konfigurierbare Ausnahme für private SQL-Netze ist für öffentliche IP-Adressen und fremde Hostnamen gesperrt.
+- Neuer reproduzierbarer Runner aus einem frischen temporären Verzeichnis mit eigenen Containern und synthetischen Daten unter PHP 8.4 erfolgreich durchgelaufen.
 
-## Domainunabhängigkeit
+## Grenzen und Betriebsanforderungen
 
-Im ausgelieferten Programm sind keine kundenspezifischen Domains oder Serverzugänge fest hinterlegt. Links sind relativ; Sitzungspfad und Installationspfad werden aus der jeweiligen Umgebung abgeleitet. Installationen im Hauptverzeichnis und Unterverzeichnis sind vorgesehen. Jede Kundeninstallation erhält ihre eigene Konfiguration und ihren eigenen Speicher.
+Diese Prüfungen sind keine Sicherheitszertifizierung. Sie ersetzen nicht die Prüfung der Hostingkonfiguration und der tatsächlich installierten PHP-/MySQL-/Systembibliotheksversionen. Eine sichere externe SQL-Verbindung benötigt TLS mit einem passenden Serverzertifikat und CA-Vertrauen. Wenn ein Hoster dies nicht bereitstellt, kann die Anwendung diese Verschlüsselung nicht selbst aktivieren. Die ausdrücklich mögliche Ausnahme für private Hostingnetze bleibt unverschlüsselt und wird unter Backup als Warnung angezeigt.
 
-## Grenzen der Prüfung
+Die Wirksamkeit von Webserversperren wird für Speicher im Webverzeichnis periodisch über dessen fest konfigurierte HTTPS-Adresse geprüft; eine fehlgeschlagene Prüfung sperrt die Anwendung vorsorglich. Die Adresse muss bei einem Domain-/Pfadwechsel angepasst werden.
 
-PHP-Erweiterungen, Datenbankrechte, Zertifikate, FTP-Pfade, Dateirechte und Webserversperren müssen beim jeweiligen Hoster verfügbar sein. Keine Lastprüfung mit hunderten gleichzeitigen Benutzern oder mehrjährigen Großbeständen. Unterschiedliche Mobilbrowser können weitere Darstellungstests erfordern. Datenschutzpflichten, externe Sicherungen und Aufbewahrungsfristen müssen organisatorisch geprüft werden.
+Keine umfassenden Lasttests mit großen Unternehmen, keine vollständige Browsermatrix und keine Tests gegen jede PHP-Hauptversion. PHP 8.5/8.6 sind mit dieser Veröffentlichung nicht ausdrücklich freigegeben. Historische Testprotokolle gehören zu den darin genannten Entwicklungsständen.
 
-Die mitgelieferten Testprotokolle stammen aus unterschiedlichen Entwicklungsständen. Nur die jeweils ausdrücklich genannten Funktionen wurden in diesen Läufen erneut geprüft.
+## Wiederholbare Tests
+
+Siehe entwicklung/TESTS-LESEN.txt und entwicklung/run_tests.py. Die Tests laufen ausschließlich mit synthetischen Daten. Die GitHub-Konfiguration enthält zusätzlich eine Testmatrix für PHP 8.3 und 8.4. Der Erfolg eines entfernten GitHub-Laufs muss anhand seines jeweiligen Status geprüft werden.

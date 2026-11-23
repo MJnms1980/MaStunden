@@ -1,7 +1,9 @@
-# MaStunden 1.0.7 – Installation und Betrieb
+> Sicherheitsupdate 1.0.8: Vor einem Update UPDATE-1.0.8.md im Dokumentationsordner lesen. Externe SQL-Verbindungen und geschützter Speicher im Webverzeichnis benötigen ggf. zusätzliche Angaben in config.php. Sicherungen werden nicht mehr automatisch nach 24 Stunden oder bei Mitarbeiterlöschung gelöscht.
+
+# MaStunden 1.0.8 – Installation und Betrieb
 
 **Für Ihr Unternehmen konfigurierbar · Entwickelt von IT-Janz**  
-Stand: 8. Oktober 2026. Unternehmensangaben und Firmenlogo sind pro Installation anpassbar; das Entwicklerlogo ist fest eingebunden.
+Stand: 23. November 2026. Unternehmensangaben und Firmenlogo sind pro Installation anpassbar; das Entwicklerlogo ist fest eingebunden.
 
 ## 1. Was Sie erhalten
 
@@ -13,7 +15,7 @@ Das Paket enthält:
 
 - `web/`: fertige Programmdateien, die auf den Webspace gehören.
 - `dokumentation/`: Anleitung, Funktionsübersicht und Prüfbericht.
-- `entwicklung/`: Datenbankschema und automatisierte Tests für Weiterentwicklung. **Nicht in das öffentlich erreichbare Webverzeichnis hochladen.**
+- `entwicklung/`: Datenbankschema und automatisierte Tests für Weiterentwicklung. **Nicht öffentlich hochladen.**
 
 **Keine Testkonten und keine Datenbankzugangsdaten sind im ausgelieferten Programm vorkonfiguriert.** Das erste Administratorkonto legen Sie selbst an.
 
@@ -39,7 +41,7 @@ Für jedes Kundenunternehmen richten Sie eine separate Installation mit eigenen 
 Erforderlich:
 
 - PHP **8.3 oder neuer**, eine aktuell gepflegte PHP-Version verwenden. Geprüft mit PHP 8.3.
-- MySQL **8.0 oder neuer** mit InnoDB und utf8mb4. Geprüft mit MySQL 8.4. MariaDB wurde nicht getestet.
+- MySQL **8.0 oder neuer** mit InnoDB und utf8mb4. Geprüft mit MySQL 8.4. MariaDB wird vom Installer ausdrücklich abgewiesen.
 - PHP-Erweiterungen: PDO MySQL, ZIP mit AES-256-Unterstützung, Fileinfo, Mbstring, GD, OpenSSL und die üblichen Standardfunktionen einschließlich iconv.
 - HTTPS mit gültigem Zertifikat. PHP muss die Verbindung als HTTPS erkennen.
 - Mindestens **128 MB PHP memory_limit**, für größere Backups und große Logos **256 MB empfohlen**.
@@ -90,7 +92,7 @@ Klicken Sie auf **„MaStunden installieren“**. Die Datenbank muss bereits exi
 
 Unter „Dateien mit FTP / FTPS einrichten“ aktivieren Sie „FTP-Einrichtung verwenden“. Tragen Sie Server, Port (üblicherweise 21), FTP-Benutzer, FTP-Passwort und den FTP-Ordner ein, in dem `install.php` liegt, beispielsweise `/public_html/mastunden`. Unternehmen und Administratorname sind bewusst leer und müssen selbst eingetragen werden.
 
-FTPS ist vorausgewählt und verschlüsselt Steuerverbindung und Dateiübertragung. Das Serverzertifikat wird geprüft. Einfaches FTP ist optional, überträgt aber Zugangsdaten und Dateien unverschlüsselt. SFTP wird nicht unterstützt. Für diese Option benötigt PHP zusätzlich die Erweiterung **cURL mit FTP- und TLS-Unterstützung**.
+FTPS ist vorausgewählt und verschlüsselt Steuerverbindung und Dateiübertragung. Das Serverzertifikat wird geprüft. Unverschlüsseltes FTP ist nicht mehr zugelassen. SFTP wird nicht unterstützt. Für diese Option benötigt PHP zusätzlich die Erweiterung **cURL mit FTP- und TLS-Unterstützung**.
 
 MaStunden prüft die Zuordnung des FTP-Ordners, erstellt den privaten Speicher und schreibt die Konfiguration über FTP. Die FTP-Zugangsdaten werden ausschließlich während dieses Installationsaufrufs verwendet und weder in der Konfiguration noch in der Sitzung gespeichert. Nach einem Fehler müssen Sie das FTP-Passwort erneut eingeben.
 
@@ -186,7 +188,7 @@ Das Archiv ist AES-256-verschlüsselt und enthält Datenbanktabellen, hochgelade
 
 Datenbankzugangsdaten und der absolute Speicherpfad bleiben in `config.php` und sind nicht Bestandteil des Anwendungsbackups. Sichern Sie diese Datei für einen vollständigen manuellen Umzug separat und geschützt. Das Programm selbst bewahren Sie als Installationspaket auf.
 
-Es gibt keine automatischen Backups ohne zuverlässigen externen Zeitgeber. Richten Sie einen regelmäßigen manuellen Ablauf ein. Fertige temporäre Backup-Dateien auf dem Webserver werden nach 24 Stunden beim nächsten Administrator-Seitenaufruf entfernt; die Bereinigung ist ohne Cronjob nicht minutengenau garantiert.
+Es gibt keine automatischen Backups ohne zuverlässigen externen Zeitgeber. Richten Sie einen regelmäßigen manuellen Ablauf ein. Sicherungsarchive bleiben erhalten, bis ein Administrator das jeweilige Archiv unter Backup mit Passwort und Begründung ausdrücklich löscht.
 
 ## 8. Wiederherstellung und Serverumzug
 
@@ -211,7 +213,7 @@ Die Browser-Auswahl ist auf 512 MB begrenzt, zusätzlich gelten die oft deutlich
 
 ### Umzug auf einen neuen Webserver
 
-Installieren Sie MaStunden 1.0.7 auf dem neuen Server frisch mit eigener Datenbank und eigenem Präfix. Der private Ordner wird automatisch erstellt. Spielen Sie anschließend das Backup ein. Die neuen Datenbankzugangsdaten und der neue Speicherpfad bleiben bestehen, während Unternehmensdaten, Benutzer und Dokumente aus dem Backup übernommen werden.
+Installieren Sie MaStunden 1.0.8 auf dem neuen Server frisch mit eigener Datenbank und eigenem Präfix. Der private Ordner wird automatisch erstellt. Spielen Sie anschließend das Backup ein. Die neuen Datenbankzugangsdaten und der neue Speicherpfad bleiben bestehen, während Unternehmensdaten, Benutzer und Dokumente aus dem Backup übernommen werden.
 
 Öffnen Sie danach Stichproben von Monatsberichten und Dokumenten, prüfen Sie HTTPS und Unternehmensangaben. Erst nach erfolgreicher Kontrolle sollte die alte Installation außer Betrieb gehen.
 
@@ -227,7 +229,7 @@ Zum Schutz vor gemischten Programmversionen kann vor dem Upload einer künftigen
 
 **Nie überschreiben:** `config.php` und der private Speicherordner. `install.php` wird für Updates nicht erneut ausgeführt.
 
-Version 1.0.7 verwendet unverändert Schema-Version 1. Beim Update von 1.0.0, 1.0.1 oder 1.0.2 werden nur Programmdateien ersetzt; `config.php` und der vorhandene private Ordner bleiben erhalten. Es ist keine Neuinstallation und keine Datenbankmigration notwendig. Das initiale Schema wird im Installer angelegt; eine bereits installierte Version wird nicht stillschweigend verändert. Zukünftige Updates mit Schemaänderung müssen eigene versionierte Migrationen und passende Updatehinweise mitbringen. Eine universelle Migration unbekannter zukünftiger Versionen ist nicht enthalten.
+Version 1.0.8 verwendet unverändert Schema-Version 1. Beim Update von 1.0.0, 1.0.1 oder 1.0.2 werden nur Programmdateien ersetzt; `config.php` und der vorhandene private Ordner bleiben erhalten. Es ist keine Neuinstallation und keine Datenbankmigration notwendig. Das initiale Schema wird im Installer angelegt; eine bereits installierte Version wird nicht stillschweigend verändert. Zukünftige Updates mit Schemaänderung müssen eigene versionierte Migrationen und passende Updatehinweise mitbringen. Eine universelle Migration unbekannter zukünftiger Versionen ist nicht enthalten.
 
 Bei einem fehlgeschlagenen Update die gesicherten Programmdateien zurückspielen. Wurde auch das Schema geändert, verwenden Sie zusätzlich das passende Vorab-Backup nach den Updatehinweisen. Ein Datenbankbackup darf nur mit einer dazu kompatiblen Programmversion wiederhergestellt werden.
 
@@ -285,12 +287,12 @@ Mitarbeiter können eigene offene oder abgelehnte Abwesenheitsanträge mit Begr�
 
 Unter **Mitarbeiter → Bearbeiten → Mitarbeiter dauerhaft löschen** kann ein Administrator ein Konto einschließlich zugehöriger Zeiten, Abwesenheiten, Dokumente, Modelle, Monatsabschlüsse, Korrekturen, Mitteilungen und personenbezogener Protokolle löschen. Dafür sind Administratorpasswort, Begründung ohne personenbezogene Angaben, die Bestätigung **MITARBEITER LÖSCHEN** und die Bestätigung zur Prüfung der Aufbewahrungspflichten erforderlich. Das angemeldete eigene Konto und der letzte aktive Administrator sind geschützt. Eine neutral gehaltene Löschbegründung mit Mengenangaben bleibt protokolliert; die gelöschte Person wird dabei nicht benannt.
 
-Alle vorhandenen Sicherungsarchive dieser Installation auf dem Server werden ebenfalls gelöscht, da sie die Person enthalten können. Bereits heruntergeladene Backups, Exporte und Sicherungen des Hostinganbieters werden nicht automatisch entfernt. Eine Wiederherstellung alter Sicherungen kann gelöschte Daten zurückbringen. Diese Kopien und Freitextangaben in anderen Datenbeständen müssen organisatorisch separat geprüft werden. Bei Dateisystemfehlern wird eine unvollständige Dateilöschung gemeldet und beim nächsten Aufruf erneut versucht.
+Vorhandene Sicherungsarchive bleiben erhalten und können Daten der gelöschten Person enthalten. Lokale Archive lassen sich unter Backup einzeln mit ausdrücklicher Bestätigung löschen. Bereits heruntergeladene Backups, Exporte und Sicherungen des Hostinganbieters werden nicht automatisch entfernt. Eine Wiederherstellung alter Sicherungen kann gelöschte Daten zurückbringen. Diese Kopien und Freitextangaben in anderen Datenbeständen müssen organisatorisch separat geprüft werden. Bei Dateisystemfehlern wird eine unvollständige Dateilöschung gemeldet und beim nächsten Aufruf erneut versucht.
 
 Die Löschfunktion allein ist keine Garantie für die Erfüllung sämtlicher Datenschutzpflichten. Gesetzliche Aufbewahrungspflichten können einer sofortigen Löschung entgegenstehen; in diesem Fall zunächst Konto deaktivieren und den notwendigen Datenbestand klären. Quelle: BfDI, Kurzpapier Nr. 11, Recht auf Löschung: https://www.bfdi.bund.de/SharedDocs/Downloads/DE/DSK/Kurzpapiere/20170829_Kurzpapier_11_RechtaufVergessenwerden.html
 
 Für dieses Update ist keine Datenbankmigration erforderlich. Bestehende Daten werden beim Hochladen der Programmdateien nicht gelöscht; Löschungen erfolgen ausschließlich durch die neue bestätigte Aktion. Frühere als „Abgelehnt“ gespeicherte Stornierungen werden nicht automatisch umgedeutet.
 
-## Version 1.0.7: Mitteilungen und Entwicklerlogo
+## Version 1.0.8: Mitteilungen und Entwicklerlogo
 
 Die Übersicht zeigt standardmäßig nur ungelesene Mitteilungen. Mit „Gelesene anzeigen“ erscheinen auch bereits gelesene Einträge; „Gelesene ausblenden“ kehrt zur Standardansicht zurück. Die Einträge werden dabei nicht gelöscht. Ältere Mitteilungen sind über die Blätterfunktion erreichbar. Nach „Als gelesen markieren“ kehrt die Anzeige zur Standardansicht zurück. „Entwickelt von“ steht mittig über dem IT-Janz-Logo. Keine Datenbankmigration nötig.

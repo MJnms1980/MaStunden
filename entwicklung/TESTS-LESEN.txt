@@ -1,10 +1,20 @@
-Tests nur in einer isolierten, wegwerfbaren Umgebung ausführen.
-Die Testdaten enthalten ausschließlich erfundene Personen und Testpasswörter.
+MaStunden 1.0.8 – isolierte Tests
 
-Die Integrationstests benötigen Python 3, eine lokale PHP-8.3-Umgebung und eine leere MySQL-8.4-Datenbank.
-Die mitgelieferten Testskripte dokumentieren den tatsächlich verwendeten lokalen Testaufbau (work/app bzw. work/fresh-app).
-Pfad- und Containerbezeichnungen für einen anderen Aufbau anpassen. Nicht auf produktive Installationen richten.
-Der Dockerfile dient nur der lokalen Entwicklung und ist keine Voraussetzung auf dem FTP-Webserver.
+Benötigt Docker und Python 3. Keine produktiven Zugangsdaten verwenden.
+Aus dem Projektordner starten:
+  python3 entwicklung/run_tests.py --php 8.4
+  python3 entwicklung/run_tests.py --php 8.3
 
-MASTUNDEN_LOCAL_TEST=1 erlaubt HTTP ausschließlich im isolierten lokalen Testcontainer.
-Diesen Schalter niemals in einer produktiven Hostingumgebung setzen.
+Der Runner erstellt eine temporäre Programmkopie, ein eigenes Docker-Netz und
+wegwerfbare Container mit synthetischen Daten. Er prüft Installation,
+Berechtigungen, Berichte, Backups/Wiederherstellung, Datei-Abbruchbehandlung,
+Uploadgrenzen, Löschung, Protokollierung und konkurrierende Dateizugriffe.
+Am Ende werden seine Container, sein Netz und die temporäre Kopie entfernt.
+Die Docker-Images bleiben für spätere Tests verfügbar.
+
+Die übrigen älteren Tests und Protokolle dokumentieren den historischen
+Entwicklungsaufbau und benötigen ggf. angepasste Pfade. Der aktuelle Runner
+verwendet integration.py, security_tests.py und lock_tests.py.
+
+MASTUNDEN_LOCAL_TEST=1 erlaubt HTTP und unverschlüsselte Testdatenbanken
+nur im isolierten Testaufbau. Niemals auf dem Produktivserver setzen.

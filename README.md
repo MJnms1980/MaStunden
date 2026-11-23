@@ -4,7 +4,7 @@ Mitarbeiter-Zeiterfassung für den eigenen Webspace. Entwickelt von **[IT-Janz](
 
 **Kostenlos und frei nutzbar:** Jede Person darf MaStunden privat oder kommerziell verwenden, anpassen und weitergeben. Es gelten die Bedingungen der [MIT-Lizenz](LICENSE).
 
-MaStunden 1.0.7 läuft mit PHP und MySQL und lässt sich per FTP/FTPS und Browser installieren. Unternehmensangaben und Firmenlogo sind frei konfigurierbar. Hauptdomain, Subdomain und Unterverzeichnis werden unterstützt; für jedes Unternehmen wird eine separate Installation eingerichtet.
+MaStunden 1.0.8 läuft mit PHP und MySQL und lässt sich per FTP/FTPS und Browser installieren. Unternehmensangaben und Firmenlogo sind frei konfigurierbar. Hauptdomain, Subdomain und Unterverzeichnis werden unterstützt; für jedes Unternehmen wird eine separate Installation eingerichtet.
 
 ## Funktionen
 
@@ -18,6 +18,10 @@ MaStunden 1.0.7 läuft mit PHP und MySQL und lässt sich per FTP/FTPS und Browse
 - Responsive Oberfläche für Desktop, Tablet und Smartphone
 
 Eine Lohnabrechnung ist nicht enthalten.
+
+## Sicherheitsupdate 1.0.8
+
+Dieses Update verbessert Dateitransaktionen, Uploadbegrenzungen, Protokollierung und den Erhalt von Sicherungsarchiven. Vor dem Update unbedingt die [Updatehinweise](dokumentation/UPDATE-1.0.8.md) lesen: Bei geschütztem Speicher im Webverzeichnis und externen SQL-Servern sind zusätzliche Konfigurationsangaben erforderlich.
 
 ## Installation
 
