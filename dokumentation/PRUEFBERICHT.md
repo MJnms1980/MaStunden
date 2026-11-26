@@ -1,6 +1,6 @@
-# MaStunden 1.0.8 – Prüfbericht
+# MaStunden 1.0.9 – Prüfbericht
 
-Stand: 23. November 2026.
+Stand: 26. November 2026.
 
 ## Durchgeführte Prüfungen
 
@@ -14,6 +14,13 @@ Stand: 23. November 2026.
 - Parallele Lesezugriffe und blockierende Downloadausgabe halten andere Anfragen nicht mehr mit einer globalen exklusiven Sperre auf.
 - Die ausdrücklich konfigurierbare Ausnahme für private SQL-Netze ist für öffentliche IP-Adressen und fremde Hostnamen gesperrt.
 - Neuer reproduzierbarer Runner aus einem frischen temporären Verzeichnis mit eigenen Containern und synthetischen Daten unter PHP 8.4 erfolgreich durchgelaufen.
+
+- SQL-Oberfläche mit tatsächlicher TLS-Verbindung: erfolgreicher Test ohne Änderung, Ablehnung falscher Zertifikatsnamen und geprüfte Konfigurationsumschaltung mit geschützter Rücknahmekopie.
+- Updatepakete mit falscher Signatur, Pfadtraversierung, config.php, Downgrade und unbekanntem Schema werden abgewiesen.
+- Updatezugriff und Bestätigung benötigen Administratorrechte, CSRF und erneut das Passwort; Fehlversuche werden begrenzt.
+- Vollständiger signierter Updateablauf mit verschlüsselter Sicherung: Konfiguration und Sicherung bleiben erhalten, schreibende Mitarbeiteraktionen sind währenddessen gesperrt.
+- Erzwungener Prozessabbruch nach Austausch einer PHP-Datei: der nächste HTTP-Aufruf stellt die bisherige Programmversion vor dem Laden der Module wieder her.
+- Gesamter finaler Stand lokal unter PHP 8.3.35 und PHP 8.4 erfolgreich geprüft.
 
 ## Grenzen und Betriebsanforderungen
 

@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-const APP_VERSION = '1.0.8';
+const APP_VERSION = '1.0.9';
 function schema(): array { return [
 'settings'=>'k VARCHAR(100) PRIMARY KEY, v LONGTEXT NOT NULL',
 'users'=>"id INT AUTO_INCREMENT PRIMARY KEY, email VARCHAR(190) NOT NULL UNIQUE, name VARCHAR(190) NOT NULL, personnel VARCHAR(80) NOT NULL DEFAULT '', password VARCHAR(255) NOT NULL, role VARCHAR(20) NOT NULL DEFAULT 'employee', active TINYINT NOT NULL DEFAULT 1, must_change TINYINT NOT NULL DEFAULT 0, employment_start DATE NOT NULL, employment_end DATE NULL, vacation_days DECIMAL(7,2) NOT NULL DEFAULT 0, created_at DATETIME NOT NULL",

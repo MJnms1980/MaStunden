@@ -57,3 +57,10 @@ Fallback für eingeschränktes open_basedir: HTTPS-Zuordnungsprobe vor Aktivieru
 ## Version 1.0.6
 
 Neuer Abwesenheitsstatus cancelled innerhalb des bisherigen VARCHAR-Felds, daher Schema 1 unverändert. lib/user_delete.php koordiniert gezielte Kontolöschung innerhalb der bestehenden Anwendungstransaktion und Dateisperre. Dokumente und Serverarchive werden zuerst umbenannt, bei Transaktionsabbruch zurückbenannt und nach Commit entfernt; verbliebene erase-Dateien werden beim nächsten Aufruf erneut entfernt. Audit-Verknüpfungen, Akteursbezug, historische user_id-Snapshots und explizite Namens-/E-Mail-Nennungen werden bereinigt. Externe Sicherungen und unstrukturierte personenbezogene Freitexte benötigen eine organisatorische Prüfung.
+
+
+## Version 1.0.9
+
+Stabiler index.php-Einstieg lädt update-bootstrap.php und hält vor allen Anwendungsmodulen eine gemeinsame Updatesperre. Der Dateiaustausch erwirbt diese exklusiv; ein dauerhaftes Journal ermöglicht Rücknahme vor dem Laden möglicherweise gemischter Module. Signierte Ed25519-Manifeste binden Dateiinhalte, Version, Schema, PHP-Anforderung und den unveränderlichen Starter an das Paket. Der private Signaturschlüssel ist nicht Teil der Distribution. app.php enthält den bisherigen Request-Controller.
+
+SQL-Verwaltung prüft TLS, Datenbankinstanz und session_epoch vor atomarem Ersetzen der Konfiguration. Zugangsdaten erscheinen nicht im Änderungsprotokoll. Schreibende normale Aktionen sind während einer Updatevorbereitung gesperrt. Ein getrenntes Sicherheitsbackup und das Programm-Rücknahmejournal werden vor dem Dateiaustausch geprüft beziehungsweise dauerhaft gespeichert.
