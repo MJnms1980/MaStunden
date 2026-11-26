@@ -1,6 +1,8 @@
+> Aktuelle Version: **1.0.9**. Für bestehende Installationen und den neuen SQL-/Update-Assistenten die Anleitung **UPDATE-1.0.9.md** in diesem Ordner beachten. Beim erstmaligen Umstieg index.php zuletzt übertragen; config.php und privaten Speicher behalten.
+
 > Sicherheitsupdate 1.0.8: Vor einem Update UPDATE-1.0.8.md im Dokumentationsordner lesen. Externe SQL-Verbindungen und geschützter Speicher im Webverzeichnis benötigen ggf. zusätzliche Angaben in config.php. Sicherungen werden nicht mehr automatisch nach 24 Stunden oder bei Mitarbeiterlöschung gelöscht.
 
-# MaStunden 1.0.8 – Installation und Betrieb
+# MaStunden 1.0.9 – Installation und Betrieb
 
 **Für Ihr Unternehmen konfigurierbar · Entwickelt von IT-Janz**  
 Stand: 23. November 2026. Unternehmensangaben und Firmenlogo sind pro Installation anpassbar; das Entwicklerlogo ist fest eingebunden.
@@ -213,7 +215,7 @@ Die Browser-Auswahl ist auf 512 MB begrenzt, zusätzlich gelten die oft deutlich
 
 ### Umzug auf einen neuen Webserver
 
-Installieren Sie MaStunden 1.0.8 auf dem neuen Server frisch mit eigener Datenbank und eigenem Präfix. Der private Ordner wird automatisch erstellt. Spielen Sie anschließend das Backup ein. Die neuen Datenbankzugangsdaten und der neue Speicherpfad bleiben bestehen, während Unternehmensdaten, Benutzer und Dokumente aus dem Backup übernommen werden.
+Installieren Sie MaStunden 1.0.9 auf dem neuen Server frisch mit eigener Datenbank und eigenem Präfix. Der private Ordner wird automatisch erstellt. Spielen Sie anschließend das Backup ein. Die neuen Datenbankzugangsdaten und der neue Speicherpfad bleiben bestehen, während Unternehmensdaten, Benutzer und Dokumente aus dem Backup übernommen werden.
 
 Öffnen Sie danach Stichproben von Monatsberichten und Dokumenten, prüfen Sie HTTPS und Unternehmensangaben. Erst nach erfolgreicher Kontrolle sollte die alte Installation außer Betrieb gehen.
 

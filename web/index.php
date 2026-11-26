@@ -1,48 +1,12 @@
 <?php
 declare(strict_types=1);
-if(PHP_VERSION_ID<80300){http_response_code(503);exit('MaStunden benötigt PHP 8.3 oder neuer. Bitte im Hostingpanel umstellen.');}
+// Stable entry point: no application modules are loaded before the update lock.
 ini_set('display_errors','0');
 if(!is_file(__DIR__.'/config.php')){header('Location: install.php');exit;}
-$config=require __DIR__.'/config.php';
-if(isset($config['storage_guard_sha256'])&&(!is_file($config['storage'].'/.htaccess')||!hash_equals($config['storage_guard_sha256'],hash_file('sha256',$config['storage'].'/.htaccess')))){http_response_code(503);exit('Der Speicherschutz fehlt oder wurde verändert. Bitte den Administrator kontaktieren.');}
-require_once __DIR__.'/lib/core.php';require_once __DIR__.'/lib/time.php';require_once __DIR__.'/lib/files.php';require_once __DIR__.'/lib/admin.php';require_once __DIR__.'/lib/actions.php';require_once __DIR__.'/lib/backup.php';require_once __DIR__.'/lib/layout.php';require_once __DIR__.'/lib/admin_views.php';require_once __DIR__.'/lib/reports.php';
-$secure=!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off';$local=getenv('MASTUNDEN_LOCAL_TEST')==='1';
-if(!$secure&&!$local){http_response_code(403);exit('MaStunden benötigt HTTPS. Bitte mit https:// aufrufen. Bei einem vorgeschalteten Proxy muss der Hoster HTTPS korrekt an PHP melden.');}
-header('X-Content-Type-Options: nosniff');header('X-Frame-Options: DENY');header('Referrer-Policy: same-origin');header('Permissions-Policy: camera=(), microphone=(), geolocation=()');header("Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'");header('Cache-Control: no-store');if($secure&&empty(cfg()['hsts_managed_by_host']))header('Strict-Transport-Security: max-age=31536000');
-ini_set('session.use_strict_mode','1');session_name('MASTUNDEN_'.substr(hash('sha256',__DIR__),0,10));session_set_cookie_params(['lifetime'=>0,'path'=>rtrim(str_replace('\\','/',dirname($_SERVER['SCRIPT_NAME'])),'/').'/','secure'=>$secure,'httponly'=>true,'samesite'=>'Lax']);session_start();
-$ready=false;
-try {
- if(!is_dir(cfg()['storage'])||!is_writable(cfg()['storage']))fail('Privater Speicher ist nicht erreichbar. Serverpfad und Rechte prüfen.');
- request_lock();
- if(setting('schema_version')!=='1')fail('Datenbankversion passt nicht zum Programm. Update-Anleitung beachten.');
- if(isset($_SESSION['uid'])){$u=user();if(!$u||($_SESSION['password_sig']??'')!==hash('sha256',$u['password'])||($_SESSION['epoch']??'')!==setting('session_epoch')||time()-($_SESSION['last_activity']??0)>3600){unset($_SESSION['uid']);}else $_SESSION['last_activity']=time();}
- $ready=true;
- if(isset($_GET['theme'])){header('Content-Type: text/css');$color=setting('color','#117a82');if(!preg_match('/^#[a-f0-9]{6}$/i',$color))$color='#117a82';echo ':root{--accent:'.$color.'}';exit;}
- if(isset($_GET['asset'])){$kind=(string)$_GET['asset'];if(!in_array($kind,['company_logo'],true))fail('Unbekanntes Logo.');$name=setting($kind);if(!$name||!is_file(storage_path($name))){http_response_code(404);exit;}header('Content-Type: image/png');stream_private_file(storage_path($name));}
- if($_SERVER['REQUEST_METHOD']==='POST'){
-  if((int)($_SERVER['CONTENT_LENGTH']??0)>limits_bytes((string)ini_get('post_max_size'))&&limits_bytes((string)ini_get('post_max_size'))>0)fail('Die Anfrage überschreitet das PHP-Uploadlimit. Kleinere Datei wählen oder Backup per FTP im privaten Ordner bereitstellen.');csrf_check();$a=post('action');
-  if($a==='logout'){$_SESSION=[];session_regenerate_id(true);go();}
-  if($a==='login'||$a==='recovery'){
-   $bucket=hash_hmac('sha256',strtolower(post('email')),cfg()['key']);$ip=hash_hmac('sha256',$_SERVER['REMOTE_ADDR']??'',cfg()['key']);$since=gmdate('Y-m-d H:i:s',time()-900);q('DELETE FROM '.table('attempts').' WHERE attempted_at<?',[gmdate('Y-m-d H:i:s',time()-3600)]);if(count(rows('attempts','bucket=? AND attempted_at>?',[$bucket,$since]))>=5||count(rows('attempts','bucket=? AND attempted_at>?',[$ip,$since]))>=30)fail('Zu viele Versuche. Bitte 15 Minuten warten.');insert('attempts',['bucket'=>$bucket,'attempted_at'=>now()]);insert('attempts',['bucket'=>$ip,'attempted_at'=>now()]);$u=one('users','email=? AND active=1',[strtolower(post('email'))]);
-   if($a==='login'){$hash=$u['password']??'$2y$10$C6UzMDM.H6dfI/f/IKcEe.9P8T6ypPUkaQaVuCKjeXLxaMJqkwybW';if(!password_verify(post('password'),$hash)||!$u)fail('Anmeldung fehlgeschlagen. E-Mail und Passwort prüfen.');}
-   else{no_maintenance();if(!$u||$u['role']!=='admin'||!password_verify(post('recovery_key'),setting('recovery_hash')))fail('Wiederherstellung fehlgeschlagen. Angaben prüfen.');password_rule(post('password'));update('users',(int)$u['id'],['password'=>password_hash(post('password'),PASSWORD_DEFAULT),'must_change'=>0]);$new=bin2hex(random_bytes(24));set_setting('recovery_hash',password_hash($new,PASSWORD_DEFAULT));$_SESSION['recovery_once']=$new;$u=one('users','id=?',[$u['id']]);audit('recover','users',(int)$u['id']);}
-   session_regenerate_id(true);$_SESSION['uid']=(int)$u['id'];$_SESSION['password_sig']=hash('sha256',$u['password']);$_SESSION['epoch']=setting('session_epoch');$_SESSION['last_activity']=time();$_SESSION['csrf']=bin2hex(random_bytes(32));q('DELETE FROM '.table('attempts').' WHERE bucket=?',[$bucket]);go($a==='recovery'?'index.php?page=welcome':'index.php');
-  }
-  if(!user())fail('Bitte erneut anmelden.');if(user()['must_change']&&$a!=='password')fail('Bitte zuerst das vorläufige Passwort ändern.');
-  if(str_starts_with($a,'backup_')||str_starts_with($a,'restore_')){backup_action($a);go('index.php?page=backup');}
-  no_maintenance();db()->beginTransaction();try{action($a);db()->commit();recover_file_journals();}catch(Throwable $e){if(db()->inTransaction()){db()->rollBack();recover_file_journals();}throw $e;}
-  if($a==='password')$_SESSION['password_sig']=hash('sha256',user()['password']);if(!isset($_SESSION['flash']))flash('Gespeichert.');$page=(string)($_GET['page']??'dashboard');$params=['page'=>$page];foreach(['user','month'] as $key)if(isset($_GET[$key]))$params[$key]=(string)$_GET[$key];go('index.php?'.http_build_query($params));
- }
- if(user()){
-  if(user()['must_change']&&($_GET['page']??'')!=='account')go('index.php?page=account');
-  if(isset($_GET['backup_download'])){require_admin();$name=(string)$_GET['backup_download'];if(!preg_match('/^backup-[a-f0-9]{24}\.zip$/D',$name)||!is_file(storage_path($name)))fail('Backup nicht gefunden.');$j=job();if($j&&$j['archive']===$name&&$j['mode']==='backup')fail('Backup ist noch nicht vollständig.');header('Content-Type: application/zip');header('Content-Disposition: attachment; filename="MaStunden-'.$name.'"');header('Content-Length: '.filesize(storage_path($name)));stream_private_file(storage_path($name));}
-  if(job()&&($_GET['page']??'')!=='backup'){if(admin())go('index.php?page=backup');fail('MaStunden wird gerade gesichert oder wiederhergestellt. Bitte später erneut versuchen.');}
-  if(isset($_GET['download'])){$d=one('documents','id=?',[(int)$_GET['download']]);if(!$d)fail('Dokument nicht gefunden.');owner((int)$d['user_id']);$p=storage_path($d['storage_name']);if(!is_file($p))fail('Datei fehlt.');header('Content-Type: '.$d['mime']);header("Content-Disposition: attachment; filename=\"Dokument-".$d['id']."\"; filename*=UTF-8''".rawurlencode($d['original_name']));stream_private_file($p);}
-  if(isset($_GET['export']))export_reports((string)$_GET['export']);
-  // Backup deletion is an explicit administrator action; never expire recovery points on GET.
- }
-}catch(Throwable $e){if(isset($config)&&is_dir($config['storage']))error_log(gmdate('c').' '.get_class($e).' '.($e instanceof PDOException?$e->getCode():hash('sha256',$e->getMessage()))."\n",3,$config['storage'].'/errors.log');if(!$ready){http_response_code(503);echo 'MaStunden ist vorübergehend nicht verfügbar. Verbindung, Speicherprüfung und Serverprotokoll prüfen.';exit;}$GLOBALS['error']=$e instanceof PDOException?'Datenbankvorgang fehlgeschlagen. Bitte Eingaben auf Duplikate prüfen; bei fortbestehenden Problemen den Administrator kontaktieren.':$e->getMessage();http_response_code(400);}
 try{
- if(!user()){$recover=($_GET['page']??'')==='recover';layout_start($recover?'Zugang wiederherstellen':'Willkommen zurück.');echo '<p class="muted">'.($recover?'Nur für Administratoren mit dem installationsweiten Notfallschlüssel. Mitarbeiter wenden sich an ihren Administrator.':'Melden Sie sich mit Ihrem persönlichen Konto an.').'</p>';form_start($recover?'recovery':'login');field('E-Mail-Adresse','email',post('email'),'email','required autocomplete="username"');if($recover)field('Wiederherstellungsschlüssel','recovery_key','','password','required');field($recover?'Neues Passwort':'Passwort','password','','password','required autocomplete="'.($recover?'new-password':'current-password').'"');submit($recover?'Zugang wiederherstellen':'Anmelden');echo '<a class="subtle-link" href="index.php?page='.($recover?'login':'recover').'">'.($recover?'Zurück zur Anmeldung':'Passwort vergessen?').'</a>';layout_end();}
- else{$page=(string)($_GET['page']??'dashboard');$titles=['dashboard'=>'Ihre Übersicht','times'=>'Arbeitszeiten','absences'=>'Abwesenheiten','reports'=>'Monatsberichte','documents'=>'Dokumente','team'=>'Mitarbeiter','approvals'=>'Freigaben','settings'=>'Unternehmen','backup'=>'Backup & Wiederherstellung','audit'=>'Änderungsprotokoll','account'=>'Mein Konto','welcome'=>'Startklar mit MaStunden'];layout_start($titles[$page]??'MaStunden');if(user()['must_change'])echo '<div class="alert">Bitte ändern Sie Ihr vorläufiges Passwort, bevor Sie fortfahren.</div>';render_page($page);layout_end();}
-}catch(Throwable $e){echo '<div class="alert error">'.h($e instanceof PDOException?'Daten konnten nicht geladen werden.':$e->getMessage()).'</div>';}
+ $config=require __DIR__.'/config.php';
+ if(isset($config['storage_guard_sha256'])&&(!is_file($config['storage'].'/.htaccess')||!hash_equals($config['storage_guard_sha256'],hash_file('sha256',$config['storage'].'/.htaccess'))))throw new RuntimeException('Speicherschutz fehlt.');
+ require __DIR__.'/update-bootstrap.php';
+ mu_boot(__DIR__,$config['storage']);
+ require __DIR__.'/app.php';
+}catch(Throwable $e){http_response_code(503);header('Retry-After: 15');echo 'MaStunden ist vorübergehend nicht verfügbar. Bitte erneut laden. Bleibt der Hinweis bestehen, Update-Rücknahme und Speicherrechte prüfen.';}

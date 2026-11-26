@@ -1,4 +1,4 @@
-MaStunden 1.0.8 – isolierte Tests
+MaStunden 1.0.9 – isolierte Tests
 
 Benötigt Docker und Python 3. Keine produktiven Zugangsdaten verwenden.
 Aus dem Projektordner starten:
@@ -14,7 +14,9 @@ Die Docker-Images bleiben für spätere Tests verfügbar.
 
 Die übrigen älteren Tests und Protokolle dokumentieren den historischen
 Entwicklungsaufbau und benötigen ggf. angepasste Pfade. Der aktuelle Runner
-verwendet integration.py, security_tests.py und lock_tests.py.
+verwendet integration.py, security_tests.py, lock_tests.py, sql_tests.py und update_tests.py.
+SQL-Zertifikate und Update-Signaturschlüssel in diesen Tests sind ausschließlich
+synthetisch und bleiben in den wegwerfbaren Testcontainern.
 
 MASTUNDEN_LOCAL_TEST=1 erlaubt HTTP und unverschlüsselte Testdatenbanken
 nur im isolierten Testaufbau. Niemals auf dem Produktivserver setzen.
